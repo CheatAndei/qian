@@ -1,0 +1,74 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* 情感雷达 · 深海军蓝 + 雷达绿 */
+  --bg: #0A1020;
+  --bg-panel: #0E1626;
+  --bg-raise: #152038;
+  --grid: rgba(54, 241, 166, 0.05);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --ink: #E6EEF6;
+  --ink-2: #92A4B8;
+  --ink-3: #586A82;
+
+  --accent: #36F1A6;       /* 雷达绿 */
+  --accent-2: #5BFFC0;
+  --accent-soft: rgba(54, 241, 166, 0.13);
+  --warn: #FFB020;
+  --danger: #FF5C7A;
+
+  --mono: 'SFMono-Regular', ui-monospace, 'JetBrains Mono', 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  --sans: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+
+  --radius: 16px;
+}
+
+html, body {
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#app {
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  background: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+button {
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

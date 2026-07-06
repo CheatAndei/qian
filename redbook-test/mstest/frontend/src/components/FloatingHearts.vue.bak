@@ -1,0 +1,95 @@
+<template>
+  <div class="floating-hearts">
+    <span
+      v-for="h in hearts"
+      :key="h.id"
+      :ref="el => setHeartRef(h.id, el)"
+      class="fh"
+      :style="{
+        left: h.x + '%',
+        fontSize: h.size + 'px',
+      }"
+    >💕</span>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import gsap from 'gsap'
+
+const props = defineProps({
+  count: { type: Number, default: 6 }
+})
+
+const heartRefs = {}
+const tweens = []
+
+function setHeartRef(id, el) {
+  if (el) {
+    heartRefs[id] = el
+  }
+}
+
+const hearts = computed(() =>
+  Array.from({ length: props.count }, (_, i) => ({
+    id: i,
+    x: 5 + Math.random() * 90,
+    size: 16 + Math.random() * 20,
+    delay: Math.random() * 4,
+    dur: 4 + Math.random() * 5,
+  }))
+)
+
+onMounted(() => {
+  hearts.value.forEach(h => {
+    const el = heartRefs[h.id]
+    if (!el) return
+
+    gsap.set(el, {
+      opacity: 0.15 + Math.random() * 0.2,
+      y: 0,
+      rotate: 0,
+      scale: 0.8
+    })
+
+    const tween = gsap.to(el, {
+      y: -window.innerHeight * 1.05,
+      x: (Math.random() - 0.5) * 60,
+      rotate: () => gsap.utils.random(-15, 15),
+      scale: () => gsap.utils.random(0.6, 1.05),
+      duration: h.dur,
+      delay: h.delay,
+      ease: 'none',
+      repeat: -1,
+      onRepeat() {
+        gsap.set(el, {
+          y: 0,
+          x: 0,
+          rotate: 0,
+          scale: 0.8,
+          opacity: 0.15 + Math.random() * 0.2
+        })
+      }
+    })
+    tweens.push(tween)
+  })
+})
+
+onBeforeUnmount(() => {
+  tweens.forEach(t => t.kill())
+})
+</script>
+
+<style scoped>
+.floating-hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.fh {
+  position: absolute;
+  bottom: -30px;
+}
+</style>

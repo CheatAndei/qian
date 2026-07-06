@@ -1,0 +1,36 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+unpackage/
+.vite/
+.output/
+build/
+*.local
+
+# 环境变量（含密钥）
+.env
+.env.*
+
+# 部署
+.vercel
+.netlify
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# 项目其他目录（不入库）
+panpan/
+worker/
+agent-bridge/
+xpy-agent/
+classtest/
+.claude/

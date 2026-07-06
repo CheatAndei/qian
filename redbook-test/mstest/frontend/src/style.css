@@ -1,0 +1,37 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --pink: #FF3B30;
+  --pink-light: #FF6B35;
+  --pink-bg: #0A0A0F;
+  --coral: #FF6B35;
+  --yellow: #FF9F0A;
+  --purple: #FF3B30;
+  --white: #FFFFFF;
+  --text: #EDE4DC;
+  --text-light: #8C7E74;
+  --shadow: 0 4px 24px rgba(255,59,48,0.2);
+  --shadow-lg: 0 8px 40px rgba(255,59,48,0.25);
+}
+
+body {
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  background: var(--pink-bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app { min-height: 100vh; max-width: 480px; margin: 0 auto; position: relative; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+}

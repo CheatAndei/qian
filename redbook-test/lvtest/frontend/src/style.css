@@ -1,0 +1,73 @@
+﻿* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* 情侣亲密度等级测试 · 独立视觉 */
+  --bg: #120F12;
+  --bg-panel: #1D171D;
+  --bg-raise: #2A2229;
+  --grid: rgba(255, 122, 162, 0.035);
+  --line: rgba(246, 238, 242, 0.08);
+  --line-strong: rgba(246, 238, 242, 0.14);
+
+  --ink: #F6EEF2;
+  --ink-2: #B8A2AD;
+  --ink-3: #7C6471;
+
+  --accent: #FF7AA2;
+  --accent-2: #8FE3C5;
+  --accent-soft: rgba(255, 122, 162, 0.14);
+  --warn: #FFB020;
+  --danger: #FF5C7A;
+
+  --mono: 'SFMono-Regular', ui-monospace, 'JetBrains Mono', 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  --sans: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+
+  --radius: 16px;
+}
+
+html, body {
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#app {
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  background-image:
+    radial-gradient(92% 40% at 50% -8%, rgba(255, 122, 162, 0.16), transparent 62%),
+    linear-gradient(180deg, #171116 0%, #120F12 52%, #0D0B0D 100%);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+button {
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+

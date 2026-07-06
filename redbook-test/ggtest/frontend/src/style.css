@@ -1,0 +1,77 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* 双频共振 · 闺蜜同频检测 · 深紫仪器配色 */
+  --bg: #181320;          /* 深紫底 */
+  --bg-panel: #201833;    /* 面板 */
+  --bg-raise: #2A2042;    /* 抬起层 */
+  --grid: rgba(139, 123, 255, 0.05);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --ink: #ECE7F5;         /* 主文字 */
+  --ink-2: #A99FC0;       /* 次文字 */
+  --ink-3: #6B6088;       /* 弱文字/单位 */
+
+  --accent: #FF6F61;      /* 珊瑚 · 频率 A */
+  --accent-2: #8B7BFF;    /* violet · 频率 B */
+  --accent-soft: rgba(255, 111, 97, 0.14);
+  --accent-2-soft: rgba(139, 123, 255, 0.16);
+  --ok: #46E0B0;
+  --warn: #FFC061;
+
+  --mono: 'SFMono-Regular', ui-monospace, 'JetBrains Mono', 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  --sans: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+
+  --radius: 16px;
+}
+
+html, body {
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#app {
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  background: var(--bg);
+  /* 极淡测量网格（极淡 violet），营造仪器底 */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* 等宽数据数字，防止计数跳动时抖动 */
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+button {
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

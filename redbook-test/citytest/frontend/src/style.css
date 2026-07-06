@@ -1,0 +1,73 @@
+﻿* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* 城市磁场测试 · 独立视觉 */
+  --bg: #0D1210;
+  --bg-panel: #151C18;
+  --bg-raise: #1E2822;
+  --grid: rgba(82, 214, 182, 0.04);
+  --line: rgba(236, 244, 238, 0.08);
+  --line-strong: rgba(236, 244, 238, 0.14);
+
+  --ink: #ECF4EE;
+  --ink-2: #9EAEA4;
+  --ink-3: #66766B;
+
+  --accent: #52D6B6;
+  --accent-2: #F7B158;
+  --accent-soft: rgba(82, 214, 182, 0.15);
+  --warn: #F7B158;
+  --danger: #FF5C7A;
+
+  --mono: 'SFMono-Regular', ui-monospace, 'JetBrains Mono', 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  --sans: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+
+  --radius: 16px;
+}
+
+html, body {
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#app {
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  background-image:
+    radial-gradient(90% 42% at 50% -8%, rgba(82, 214, 182, 0.16), transparent 62%),
+    linear-gradient(180deg, #101711 0%, #0D1210 48%, #090D0B 100%);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+button {
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+

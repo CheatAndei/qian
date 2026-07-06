@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* 情感监测仪 · 深色仪器配色 */
+  --bg: #0B0E14;          /* 近黑底 */
+  --bg-panel: #10151F;    /* 面板 */
+  --bg-raise: #161D2A;    /* 抬起层 */
+  --grid: rgba(22, 224, 255, 0.055);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --ink: #E9EFF7;         /* 主文字 */
+  --ink-2: #9EABBE;       /* 次文字 */
+  --ink-3: #5E6E84;       /* 弱文字/单位 */
+
+  --accent: #FF3B6B;      /* 电光珊瑚 · 恋爱脑 */
+  --accent-2: #FF6F8E;
+  --accent-soft: rgba(255, 59, 107, 0.14);
+  --trace: #16E0FF;       /* 脑波青 */
+  --trace-soft: rgba(22, 224, 255, 0.16);
+  --ok: #34E5B6;
+  --warn: #FFB020;
+
+  --mono: 'SFMono-Regular', ui-monospace, 'JetBrains Mono', 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  --sans: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+
+  --radius: 16px;
+}
+
+html, body {
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#app {
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  background: var(--bg);
+  /* 极淡测量网格，营造仪器底 */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* 等宽数据数字，防止计数跳动时抖动 */
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+button {
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

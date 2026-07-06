@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><body>
+<h2>Test Lottie: 🔥 暖男</h2>
+<p id="status">Loading...</p>
+<script type="module">
+// Simulate answers that produce 🔥 暖男 tag
+const answers = Array.from({length:30}, (_,i) => ({
+  questionId: i+1,
+  score: 2,
+  tags: ['🔥','🍯'],
+  text: 'test'
+}))
+const params = new URLSearchParams({
+  objective: 60, bonus: 5, total: 65,
+  answers: JSON.stringify(answers)
+})
+window.location.href = 'http://localhost:5173/#/result?' + params.toString()
+</script>
+</body></html>
+echo "Created test page"
+# Also try direct curl to check if route works
+curl -s "http://localhost:5173/" | head -5
