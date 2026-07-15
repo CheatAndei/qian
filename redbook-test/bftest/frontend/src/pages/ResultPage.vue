@@ -21,7 +21,7 @@
         <span class="score-rule"></span>
       </div>
       <div class="report-breakdown mono">
-        <span>客观题 {{ objective }}</span><i>+</i><span>姐妹加分 {{ bonus }}</span>
+        <span>客观题 {{ objective }}</span><i>+</i><span>主观加分 {{ bonus }}</span>
       </div>
 
       <!-- 合格 / 重修 印章 -->
@@ -43,22 +43,43 @@
       </div>
     </section>
 
-    <!-- 姐妹评审团评语 -->
-    <section class="comment rise" style="animation-delay: 220ms">
-      <p class="block-label mono"><Icon icon="mdi:comment-quote-outline" /> 姐妹评审团 · 批注</p>
-      <div class="comment-card">
-        <p>{{ result.description }}</p>
-        <div class="tags">
-          <span v-for="t in cleanTags" :key="t" class="tag">{{ t }}</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 操作 -->
-    <div class="actions rise" style="animation-delay: 300ms">
+    <!-- 免费操作 -->
+    <div class="actions rise" style="animation-delay: 220ms">
       <button class="act retake" @click="retake"><Icon icon="mdi:restart" /> 重新考试</button>
       <button class="act share" @click="showShare = true"><Icon icon="mdi:image-outline" /> 生成成绩单</button>
     </div>
+
+    <!-- 深度档案（锁） -->
+    <section class="deep rise" style="animation-delay: 300ms">
+      <p class="block-label mono"><Icon icon="mdi:file-lock-outline" /> 深度档案 · 相处观察</p>
+      <div class="deep-wrap">
+        <div class="deep-content" :class="{ 'is-locked': !unlocked }" :aria-hidden="!unlocked">
+          <div class="comment-card">
+            <div class="dimension-pills">
+              <span>主维度 · {{ deepReport.primary.name }} {{ deepReport.primary.score }}</span>
+              <span>次维度 · {{ deepReport.secondary.name }} {{ deepReport.secondary.score }}</span>
+            </div>
+            <p>{{ deepReport.summary }}</p>
+            <ul class="evidence-list" v-if="deepReport.evidence.length">
+              <li v-for="item in deepReport.evidence" :key="item">{{ item }}</li>
+            </ul>
+            <p class="deep-advice">下一步：{{ deepReport.advice }}</p>
+            <small class="deep-note">{{ deepReport.note }}</small>
+            <div class="tags">
+              <span v-for="t in cleanTags" :key="t" class="tag">{{ t }}</span>
+            </div>
+          </div>
+        </div>
+        <div v-if="!unlocked" class="deep-lock">
+          <span class="deep-lock-icon"><Icon icon="mdi:lock-outline" /></span>
+          <strong>完整评审档案已生成</strong>
+          <p>主次维度 · 答题证据 · 相处建议</p>
+          <button @click="showCard = true"><Icon icon="mdi:key-variant" /> 输入兑换码解锁</button>
+          <small>1.9元·15测万能卡，首次激活后同浏览器通用</small>
+        </div>
+      </div>
+      <CardInput :show="showCard" product="bftest" @close="showCard = false" @unlocked="onUnlocked" />
+    </section>
 
     <!-- 引流 -->
     <section class="convert rise" style="animation-delay: 360ms">
@@ -74,7 +95,7 @@
     </section>
 
     <MoreTests current="bftest" />
-    <p class="disclaimer">* 本测试由 AI 生成，仅供娱乐参考，不代表真实情况。</p>
+    <p class="disclaimer">* 本测试由 AI 生成，仅供娱乐参考，不构成心理判断或现实关系建议。</p>
 
     <!-- 分享成绩单 -->
     <transition name="ov">
@@ -92,7 +113,7 @@
               <Icon icon="mdi:account-search-outline" />
               <span>{{ topTag.name }}</span>
             </div>
-            <p class="sh-comment">{{ result.description }}</p>
+            <p class="sh-comment">{{ topTag?.desc || result.subtitle }}</p>
             <div class="sh-foot">
               <span class="sh-seal"><Icon icon="mdi:certificate-outline" /></span>
               <div class="sh-brand">
@@ -113,11 +134,12 @@
 
 <script setup>
 import MoreTests from '../components/MoreTests.vue'
+import CardInput from '../components/CardInput.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import gsap from 'gsap'
 import Icon from '../components/Icon.vue'
-import { getResult, computeTopTag } from '../data/questions.js'
+import { buildDeepReport, getResult, computeTopTag } from '../data/questions.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -137,6 +159,7 @@ if (!answers.length && route.query.debug) {
 
 const result = computed(() => getResult(total))
 const topTag = computed(() => computeTopTag(answers))
+const deepReport = computed(() => buildDeepReport(answers))
 const pass = computed(() => total >= 60)
 
 // 数据文案保留，展示时剥离 emoji
@@ -147,6 +170,24 @@ const cleanTags = computed(() => (result.value?.tags || []).map(stripEmoji).filt
 
 const showShare = ref(false)
 const shareCardRef = ref(null)
+const showCard = ref(false)
+const unlocked = ref(false)
+
+function isProductUnlocked(product) {
+  try {
+    const state = JSON.parse(localStorage.getItem('unlocked') || '{}')
+    if (state === true || state?.[product]?.unlocked || state?.[product]) return true
+  } catch (_) {}
+  return document.cookie.split(';').some((item) => item.trim() === 'xpytt_unlocked=1')
+}
+
+function refreshUnlock() {
+  unlocked.value = isProductUnlocked('bftest')
+}
+
+function onUnlocked() {
+  refreshUnlock()
+}
 
 const disp = ref(total)
 const pressed = ref(false)
@@ -156,6 +197,7 @@ const reduced =
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 onMounted(() => {
+  refreshUnlock()
   if (!route.query.total && answers.length === 0) {
     router.replace('/')
     return
@@ -283,6 +325,27 @@ async function saveCard() {
 .comment-card p { font-size: 14.5px; line-height: 1.7; color: var(--ink); }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .tag { font-size: 12px; color: var(--red-deep); background: var(--red-soft); border-radius: 999px; padding: 4px 11px; font-weight: 600; }
+
+/* 深度档案 */
+.deep { margin-top: 22px; }
+.deep .block-label { margin-top: 0; }
+.deep-wrap { position: relative; min-height: 430px; }
+.deep-content { transition: filter 0.35s ease, opacity 0.35s ease; }
+.deep-content.is-locked { filter: blur(8px) saturate(0.65); opacity: 0.72; pointer-events: none; user-select: none; }
+.deep-lock { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 22px; text-align: center; border: 1px solid var(--line); border-radius: 14px; background: rgba(246, 242, 233, 0.84); backdrop-filter: blur(2px); }
+.deep-lock-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: var(--red-soft); color: var(--red); font-size: 23px; }
+.deep-lock strong { margin-top: 10px; color: var(--ink); font-size: 17px; }
+.deep-lock p { margin-top: 5px; color: var(--ink-2); font-size: 12.5px; }
+.deep-lock button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin-top: 16px; padding: 12px 22px; border: none; border-radius: 12px; background: var(--red); color: #fff; font: inherit; font-size: 14px; font-weight: 800; box-shadow: 0 9px 22px rgba(215, 38, 61, 0.22); }
+.deep-lock button:active { transform: scale(0.97); }
+.deep-lock small { margin-top: 10px; color: var(--ink-3); font-size: 10.5px; }
+.dimension-pills { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.dimension-pills span { padding: 4px 9px; border-radius: 999px; border: 1px solid var(--red); color: var(--red-deep); background: var(--red-soft); font-size: 11px; font-weight: 800; }
+.evidence-list { list-style: none; display: grid; gap: 8px; margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--line); }
+.evidence-list li { color: var(--ink-2); font-size: 12.5px; line-height: 1.55; }
+.evidence-list li::before { content: '↳'; color: var(--red); font-weight: 900; margin-right: 6px; }
+.comment-card .deep-advice { margin-top: 13px; color: var(--red-deep); font-weight: 700; }
+.deep-note { display: block; margin-top: 10px; color: var(--ink-3); font-size: 10.5px; line-height: 1.5; }
 
 /* 操作 */
 .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }

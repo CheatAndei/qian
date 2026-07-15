@@ -5,20 +5,41 @@
       <h2 class="dr-title">深度同频报告</h2>
     </div>
 
-    <div class="dr-wrap">
+    <div class="dr-wrap" style="min-height: 520px">
       <!-- 报告主体（锁定时模糊 + 禁交互） -->
-      <div class="dr-content" :class="{ 'is-locked': !unlocked }" :aria-hidden="!unlocked">
+      <div v-if="unlocked" class="dr-content">
         <!-- 五维图谱 -->
         <div class="dr-card">
-          <p class="dr-card-label">同频五维图谱</p>
+          <p class="dr-card-label">健康友情五维图谱</p>
           <PentRadar :values="radarValues" :labels="radarLabels" :color="accent" />
         </div>
 
-        <!-- 同频结论 -->
+        <!-- 主次维度 -->
         <div class="dr-card">
-          <p class="dr-card-label">同频结论</p>
+          <p class="dr-card-label">主次维度</p>
+          <p class="dr-text">主维度：{{ report.primaryLabel }} · 次维度：{{ report.secondaryLabel }}</p>
           <p class="dr-text">{{ report.summary }}</p>
           <p class="dr-forecast">{{ report.forecast }}</p>
+        </div>
+
+        <div class="dr-card">
+          <p class="dr-card-label">合拍证据</p>
+          <ul class="dr-list dr-list--ok">
+            <li v-for="(item, index) in report.evidence" :key="index">
+              <Icon icon="mdi:checkbox-marked-circle-outline" />
+              <span>{{ item }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="dr-card">
+          <p class="dr-card-label">待协商证据</p>
+          <ul class="dr-list dr-list--warn">
+            <li v-for="(item, index) in report.growthEvidence" :key="index">
+              <Icon icon="mdi:message-alert-outline" />
+              <span>{{ item }}</span>
+            </li>
+          </ul>
         </div>
 
         <!-- 关系避雷 -->
@@ -48,7 +69,7 @@
       <div class="dr-lock" v-if="!unlocked">
         <span class="dr-lock-icon"><Icon icon="mdi:lock-outline" /></span>
         <p class="dr-lock-title">深度报告未解锁</p>
-        <p class="dr-lock-desc">五维图谱 · 关系避雷 · 专属维系方案</p>
+        <p class="dr-lock-desc">主次维度 · 答案证据 · 协商建议</p>
         <button class="dr-lock-btn" @click="showCard = true">
           <Icon icon="mdi:key-variant" />
           <span>输入兑换码解锁</span>
@@ -75,7 +96,7 @@ import { RADAR_DIMS, DIM_LABELS } from '../data/quiz.js'
 
 const props = defineProps({
   report: { type: Object, required: true }, // band.deep
-  dims: { type: Object, required: true }, // {worldview, rhythm, ...}
+  dims: { type: Object, required: true },
   accent: { type: String, default: '#FF6F61' },
   product: { type: String, default: 'ggtest' },
 })

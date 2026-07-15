@@ -25,10 +25,10 @@
     <div class="hero">
       <span class="badge" v-motion="{ initial: { opacity: 0, y: 12 }, enter: { opacity: 1, y: 0, transition: { delay: 260 } } }">情感监测仪</span>
       <h1 v-motion="{ initial: { opacity: 0, y: 18 }, enter: { opacity: 1, y: 0, transition: { delay: 340, type: 'spring', stiffness: 200 } } }">
-        恋爱脑<br /><em>活跃度监测</em>
+        心动投入度<br /><em>关系投入监测</em>
       </h1>
       <p v-motion="{ initial: { opacity: 0 }, enter: { opacity: 1, transition: { delay: 460 } } }">
-        20 项情感行为扫描，测出你为他「上头」到第几级。<br />这一次，让数据替你冷静一下。
+        20 项关系场景扫描，看见投入、焦虑与自我保留的比例。<br />主结果免费，深报再回看答案证据。
       </p>
     </div>
 
@@ -58,7 +58,7 @@
       <Icon icon="mdi:power" />
       <span>开始检测</span>
     </button>
-    <p class="proof mono">已完成 <b>286,402</b> 次监测</p>
+    <p class="proof mono">20 项场景 · 主结果免费 · 万能卡解锁深报</p>
 
     <p class="note">本测试由 AI 生成，仅供娱乐参考，不构成任何专业心理或医学建议。</p>
   </div>

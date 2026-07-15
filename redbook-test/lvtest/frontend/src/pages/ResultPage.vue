@@ -1,7 +1,7 @@
-﻿<template>
+<template>
   <div class="result" v-if="report">
     <header class="r-status">
-      <span class="rec"><i></i> 等级生成</span>
+      <span class="rec"><i></i> 状态生成</span>
       <span class="mono code">节奏 {{ coord }}</span>
     </header>
 
@@ -26,12 +26,12 @@
         </svg>
         <div class="gauge-center">
           <span class="gauge-num mono" :style="{ color: report.archetype.accent }">{{ disp }}</span>
-          <span class="gauge-unit">亲密指数 %</span>
+          <span class="gauge-unit">{{ report.depth.name }} · 亲密深度 %</span>
         </div>
       </div>
     </section>
 
-    <!-- 等级结论 -->
+    <!-- 关系状态结论 -->
     <section class="persona" v-motion="{ initial: { opacity: 0, y: 16 }, enter: { opacity: 1, y: 0, transition: { delay: 300 } } }">
       <span class="persona-sig mono">{{ report.archetype.signalLabel }}</span>
       <h1 class="persona-name" :style="{ color: report.archetype.accent }">{{ report.archetype.name }}</h1>
@@ -44,10 +44,10 @@
 
     <div class="actions">
       <button class="act share" @click="showShare = true" :style="{ background: `linear-gradient(135deg, ${report.archetype.accent}, var(--accent-2))` }">
-        <Icon icon="mdi:image-outline" /> 生成等级卡
+        <Icon icon="mdi:image-outline" /> 生成状态卡
       </button>
       <button class="act retake" @click="retake">
-        <Icon icon="mdi:restart" /> 重新测级
+        <Icon icon="mdi:restart" /> 重新测评
       </button>
     </div>
 
@@ -82,7 +82,7 @@
             <span class="bracket tl"></span><span class="bracket tr"></span>
             <span class="bracket bl"></span><span class="bracket br"></span>
             <div class="sh-head">
-              <span class="rec"><i></i> LEVEL MAP</span>
+              <span class="rec"><i></i> RELATION MAP</span>
               <span class="mono">节奏 {{ coord }}</span>
             </div>
 
@@ -97,7 +97,7 @@
               </svg>
             </div>
 
-            <p class="sh-kicker mono">情侣亲密度等级测试 · 指数 {{ report.signal }}%</p>
+            <p class="sh-kicker mono">情侣亲密深度 · 指数 {{ report.signal }}%</p>
             <h2 class="sh-name" :style="{ color: report.archetype.accent }">{{ report.archetype.name }}</h2>
             <span class="sh-aka">{{ report.archetype.aka }}</span>
             <p class="sh-verdict">{{ report.archetype.verdict }}</p>
@@ -107,8 +107,8 @@
             <div class="sh-foot">
               <span class="sh-mark"><Icon icon="mdi:heart-multiple-outline" /></span>
               <div class="sh-brand">
-                <p>小红书搜「情侣亲密度等级测试」</p>
-                <p class="sh-brand-sub mono">测测你们现在亲到哪一级</p>
+                <p>小红书搜「情侣亲密度状态测试」</p>
+                <p class="sh-brand-sub mono">测测你们的亲密深度与相处状态</p>
               </div>
             </div>
           </div>
@@ -210,7 +210,7 @@ async function saveCard() {
       useCORS: true,
     })
     const link = document.createElement('a')
-    link.download = '情侣亲密度等级卡.png'
+    link.download = '情侣互动状态卡.png'
     link.href = canvas.toDataURL('image/png')
     link.click()
   } catch (e) {
@@ -614,6 +614,3 @@ async function saveCard() {
   color: var(--ink);
 }
 </style>
-
-
-

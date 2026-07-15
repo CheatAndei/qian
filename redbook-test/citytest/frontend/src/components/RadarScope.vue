@@ -19,14 +19,14 @@
 
     <span class="scan-line" :style="{ background: `linear-gradient(90deg, transparent, ${color}55, transparent)` }"></span>
 
-    <template v-if="labels.length">
+    <template v-if="displayLabels.length">
       <span
         v-for="(l, i) in labelPos"
         :key="'l' + i"
         class="city-label"
         :class="{ active: activeIndex === i }"
         :style="{ left: l.x + 'px', top: l.y + 'px', color: activeIndex === i ? color : '' }"
-      >{{ labels[i] }}</span>
+      >{{ displayLabels[i] }}</span>
     </template>
   </div>
 </template>
@@ -45,6 +45,8 @@ const props = defineProps({
 
 const C = computed(() => props.size / 2)
 const inner = computed(() => props.size - props.pad * 2)
+// 雷达始终表达 6 个宏观城市气质簇，不承载 32 个城市节点。
+const displayLabels = computed(() => props.labels.slice(0, 6))
 
 const nodes = computed(() => {
   const p = props.pad

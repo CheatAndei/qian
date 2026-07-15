@@ -12,8 +12,8 @@
     </section>
 
     <div class="hero">
-      <span class="badge">情侣亲密度等级测试</span>
-      <h1>你们亲密度<br /><em>到第几级？</em></h1>
+      <span class="badge">情侣互动状态测试</span>
+      <h1>你们现在<br /><em>谁在靠近谁？</em></h1>
       <p>20 题看你们的亲密温度、默契节奏和稳定承接，给关系一个等级刻度。</p>
     </div>
 
@@ -26,9 +26,9 @@
     <button class="cta" @click="start">
       <span class="cta-ring"></span>
       <Icon icon="mdi:heart-multiple-outline" />
-      <span>开始测级</span>
+      <span>开始观察</span>
     </button>
-    <p class="proof mono">已测级 <b>112,706</b> 对关系</p>
+    <p class="proof mono">20 个互动场景 · 主结果免费 · 深报查看答案证据</p>
 
     <p class="note">本测试由 AI 生成，仅供娱乐参考，不构成现实关系判断或专业建议。</p>
   </div>

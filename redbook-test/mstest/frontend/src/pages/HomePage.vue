@@ -1,26 +1,26 @@
 <template>
   <div class="hp">
     <span class="hp-noise" aria-hidden="true"></span>
-    <header class="hp-bar rise" style="animation-delay: 40ms"><span class="hp-live"><i></i> 夜间</span><span class="hp-org mono">匿名档案 · 外冷内热</span><span class="hp-sig"><Icon icon="mdi:moon-waning-crescent" /></span></header>
-    <div class="hp-ticker rise" style="animation-delay: 80ms" aria-hidden="true"><div class="hp-ticker-row"><span v-for="n in 2" :key="n" class="mono">外冷内热档案 · 闷骚指数测试 · 人前正经人后狂野 · 30 项深度探测 · 匿名报告 · 主结果免费 · </span></div></div>
+    <header class="hp-bar rise" style="animation-delay: 40ms"><span class="hp-live"><i></i> 反差观察</span><span class="hp-org mono">匿名档案 · 场景切换</span><span class="hp-sig"><Icon icon="mdi:moon-waning-crescent" /></span></header>
+    <div class="hp-ticker rise" style="animation-delay: 80ms" aria-hidden="true"><div class="hp-ticker-row"><span v-for="n in 2" :key="n" class="mono">隐藏反差值 · 反差人格测试 · 熟人和陌生人眼中的你 · 30 道情境 + 1 道自评 · 主结果免费 · </span></div></div>
     <section class="hp-stage rise" style="animation-delay: 130ms">
-      <div class="hp-stage-head"><span class="mono"><Icon icon="mdi:file-hidden" /> 夜间档案 · 身份加密</span><span class="mono hp-stage-code">FILE · MS</span></div>
+      <div class="hp-stage-head"><span class="mono"><Icon icon="mdi:file-hidden" /> 反差档案 · 无需填写姓名</span><span class="mono hp-stage-code">FILE · MS V2</span></div>
       <NightFile />
     </section>
     <div class="hp-stats">
       <div class="hp-stat rise" style="animation-delay: 230ms"><b class="mono">{{ statA }}</b><em>种人设</em></div>
-      <div class="hp-stat rise" style="animation-delay: 290ms"><b class="mono">{{ statB }}</b><em>项探测</em></div>
-      <div class="hp-stat rise" style="animation-delay: 350ms"><b class="mono">{{ pct }}<small>%</small></b><em>闷骚度上限</em></div>
+      <div class="hp-stat rise" style="animation-delay: 290ms"><b class="mono">{{ statB }}</b><em>项流程</em></div>
+      <div class="hp-stat rise" style="animation-delay: 350ms"><b class="mono">{{ pct }}<small>%</small></b><em>反差值范围</em></div>
     </div>
-    <main class="hp-hero"><span class="hp-badge rise" style="animation-delay: 320ms">匿名夜间指数</span><h1><span class="rise" style="animation-delay: 380ms">你的闷骚指数</span><em class="rise" style="animation-delay: 460ms">有多高？</em></h1><p class="rise" style="animation-delay: 560ms">人前正经、人后狂野？30 项匿名深度探测，生成只有你能看的外冷内热档案。本报告加密保存，不发给任何人。</p></main>
+    <main class="hp-hero"><span class="hp-badge rise" style="animation-delay: 320ms">隐藏反差值</span><h1><span class="rise" style="animation-delay: 380ms">熟人眼里的你</span><em class="rise" style="animation-delay: 460ms">会换频道吗？</em></h1><p class="rise" style="animation-delay: 560ms">用 30 道日常情境和 1 道自评，观察你的场景反差、表达主动、新鲜玩法与边界感知，生成一份反差人格档案。</p></main>
     <div class="hp-specs">
       <div class="hp-spec rise" style="animation-delay: 620ms"><Icon icon="mdi:account-question-outline" /><em>人设</em><b>8 种类型</b></div>
-      <div class="hp-spec rise" style="animation-delay: 680ms"><Icon icon="mdi:shield-moon-outline" /><em>档案</em><b>加密仅本人</b></div>
+      <div class="hp-spec rise" style="animation-delay: 680ms"><Icon icon="mdi:shield-moon-outline" /><em>模型</em><b>4 项主维度</b></div>
       <div class="hp-spec rise" style="animation-delay: 740ms"><Icon icon="mdi:share-variant-outline" /><em>分享</em><b>匿名档案卡</b></div>
     </div>
-    <button class="hp-cta rise" style="animation-delay: 800ms" @click="$router.push('/quiz')"><span class="hp-cta-ring"></span><span class="hp-cta-label">开启夜间档案</span><span class="hp-cta-ic"><Icon icon="mdi:moon-waning-crescent" /></span></button>
+    <button class="hp-cta rise" style="animation-delay: 800ms" @click="$router.push('/quiz')"><span class="hp-cta-ring"></span><span class="hp-cta-label">开始反差观察</span><span class="hp-cta-ic"><Icon icon="mdi:moon-waning-crescent" /></span></button>
     <p class="hp-proof mono">{{ proof }}</p>
-    <p class="hp-note">* 娱乐测试，结果由 AI 生成，仅供参考。匿名档案，放心作答。</p>
+    <p class="hp-note">* 结果仅基于本次选择生成，用于娱乐和自我观察，不构成人格测量或心理诊断。</p>
   </div>
 </template>
 
@@ -30,15 +30,14 @@ import gsap from 'gsap'
 import Icon from '../components/Icon.vue'
 import NightFile from '../components/NightFile.vue'
 
-const statA = ref(8); const statB = ref(30); const pct = ref(100)
-const proofs = ['已有暗夜匿名者解锁了这本档案', '不少人在凌晨偷偷完成测试', '深夜活跃指数最高的测试之一']
-const proof = ref(proofs[Math.floor(Math.random() * proofs.length)])
+const statA = ref(8); const statB = ref(31); const pct = ref(100)
+const proof = ref('无需填写姓名 · 主结果免费 · 深报兑换后查看')
 const reduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 onMounted(() => {
   if (reduced) return
   const s = { a: 0, b: 0, p: 0 }
   statA.value = 0; statB.value = 0; pct.value = 0
-  gsap.to(s, { a: 8, b: 30, p: 100, duration: 1.1, ease: 'power2.out', delay: 0.4,
+  gsap.to(s, { a: 8, b: 31, p: 100, duration: 1.1, ease: 'power2.out', delay: 0.4,
     onUpdate: () => { statA.value = Math.round(s.a); statB.value = Math.round(s.b); pct.value = Math.round(s.p) } })
 })
 </script>

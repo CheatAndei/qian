@@ -38,7 +38,7 @@
         </svg>
         <div class="gauge-center">
           <span class="gauge-num mono" :style="{ color: report.band.accent }">{{ disp }}</span>
-          <span class="gauge-unit">恋爱脑指数 %</span>
+          <span class="gauge-unit">心动投入度 %</span>
         </div>
       </div>
     </section>
@@ -102,7 +102,7 @@
             <span class="rec"><i></i> REC</span>
             <span class="mono">{{ report.band.code }}</span>
           </div>
-          <p class="sh-kicker mono">恋爱脑活跃度监测</p>
+          <p class="sh-kicker mono">心动投入度监测</p>
           <div class="sh-index mono" :style="{ color: report.band.accent }">
             {{ report.index }}<small>%</small>
           </div>
@@ -115,8 +115,8 @@
           <div class="sh-foot">
             <span class="sh-mark"><Icon icon="mdi:heart-pulse" /></span>
             <div class="sh-brand">
-              <p>小红书搜「恋爱脑监测」</p>
-              <p class="sh-brand-sub mono">测测你为他上头到第几级</p>
+              <p>小红书搜「心动投入度」</p>
+              <p class="sh-brand-sub mono">投入多少，也别忘了保留自己</p>
             </div>
           </div>
         </div>
@@ -209,7 +209,7 @@ async function saveCard() {
       useCORS: true,
     })
     const link = document.createElement('a')
-    link.download = '恋爱脑监测卡.png'
+    link.download = '心动投入度监测卡.png'
     link.href = canvas.toDataURL('image/png')
     link.click()
   } catch (e) {

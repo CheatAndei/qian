@@ -72,7 +72,7 @@ const blipPos = computed(() => {
   if (!props.blip) return { x: C.value, y: C.value }
   return polar(props.blip.angle, (props.blip.radius / 100) * outerR.value)
 })
-const activeLabel = computed(() => (props.activeIndex >= 0 ? `Lv.${props.activeIndex + 1}` : 'Lv.?'))
+const activeLabel = computed(() => (props.activeIndex >= 0 ? `SIG.${props.activeIndex + 1}` : 'SIG.?'))
 </script>
 
 <style scoped>

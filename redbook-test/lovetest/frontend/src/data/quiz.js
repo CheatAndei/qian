@@ -1,17 +1,17 @@
 // =============================================================
-//  恋爱脑活跃度监测 · 数据层
-//  结果模型：指数 0–100%（越高越上头）
-//  五维：rush 上头速度 / anxiety 患得患失 / dissolve 自我消融
-//        / please 越界讨好 / reason 理智留存
+//  心动投入度监测 · 数据层
+//  结果模型：指数 0–100%（越高代表关系占用越明显）
+//  五维：rush 升温速度 / anxiety 回应敏感 / dissolve 自我让位
+//        / please 过度配合 / reason 自我保留
 //  零 emoji；read 为监测仪读数（答题即时反馈）
 // =============================================================
 
 export const DIM_LABELS = {
-  rush: '上头速度',
-  anxiety: '患得患失',
-  dissolve: '自我消融',
-  please: '越界讨好',
-  reason: '理智留存',
+  rush: '升温速度',
+  anxiety: '回应敏感',
+  dissolve: '自我让位',
+  please: '过度配合',
+  reason: '自我保留',
 }
 
 export const questions = [
@@ -240,66 +240,66 @@ export const questions = [
 // ===== 结果带（4 档人设）=====
 export const bands = [
   {
-    range: [0, 25],
-    code: 'LV-01',
-    name: '恋爱观察员',
-    aka: '清醒理智型',
+    range: [0, 38],
+    code: 'HOLD',
+    name: '清醒投入',
+    aka: '自我保留充足',
     verdict: '你谈恋爱像做实验：投入，但始终留着一只手在自己身上。这很好，别被人说成「不够爱」。',
     tags: ['#情绪稳定', '#边界清晰', '#自己也是世界'],
     accent: '#34E5B6',
     deep: {
       summary:
         '监测显示你的理智区全程在线。你会爱，但不会把自己整个交出去——情绪有锚点，决策有自己的一票。这不是冷淡，是成熟。你的风险不在「太上头」，而在偶尔太克制，容易被对方误读为不在乎。',
-      forecast: '走向预测：这段关系大概率稳，但需要你偶尔主动暴露一点脆弱，否则容易显得「不需要他」。',
+      forecast: '状态提示：自我保留很充足，也可以主动表达一点脆弱和需要，避免被误读为不在乎。',
       warnings: ['过度独立可能让对方缺少被需要感', '把心动误判成不理智，错过真正合适的人'],
       advice: ['允许自己偶尔上头一次，关系需要温度', '把你的在乎说出来，他不一定能看懂沉默', '保持现在的边界感，这是你的护城河'],
     },
   },
   {
-    range: [26, 50],
-    code: 'LV-02',
-    name: '偶尔上头',
-    aka: '轻症阶段',
+    range: [39, 49],
+    code: 'WARM',
+    name: '心动升温',
+    aka: '投入可回收',
     verdict: '大部分时候你拎得清，只在特定的人面前会短暂失灵。属于「健康的喜欢」，别慌。',
     tags: ['#在乎但不失控', '#会回血', '#人间清醒偶尔断电'],
     accent: '#16E0FF',
     deep: {
       summary:
         '你的脑波多数时间平稳，只在他做出特定动作时出现尖峰。这说明你有正常的依恋，也有正常的复位能力——上头之后能自己缓过来。这是最舒服的恋爱状态：投入得起，也收得回。',
-      forecast: '走向预测：只要对方给的反馈稳定，你会越来越放松；一旦对方忽冷忽热，你的焦虑值会被拉高。',
+      forecast: '状态提示：稳定回应会让你更放松；忽冷忽热则容易触发额外确认需求。',
       warnings: ['对方的「忽冷忽热」是你的主要触发器', '上头时容易临时降低自己的标准'],
-      advice: ['记住你清醒时定的底线，别在上头时改它', '焦虑发作时先离开手机十分钟', '把「他偶尔的冷淡」和「你的价值」分开看'],
+      advice: ['记住平静时定的底线，别在投入升高时临时改它', '回应焦虑升高时先离开手机十分钟', '把「对方偶尔的冷淡」和「你的价值」分开看'],
     },
   },
   {
-    range: [51, 75],
-    code: 'LV-03',
-    name: '恋爱进行时',
-    aka: '中度恋爱脑',
+    range: [50, 61],
+    code: 'FULL',
+    name: '高投入模式',
+    aka: '自我空间收窄',
     verdict: '他已经变成你生活的主线程，其他事都在后台运行。甜是真甜，但你也在悄悄消耗自己。',
     tags: ['#重度在乎', '#自我在让位', '#该回点血了'],
     accent: '#FF6F8E',
     deep: {
       summary:
         '监测捕捉到明显的自我让位信号：你的优先级、作息、情绪都开始围着他转。这种全情投入会让关系很浓烈，但你的「自我信号」正在变弱——当一个人把全部重量压在另一个人身上，关系会失去弹性。',
-      forecast: '走向预测：若对方同样投入，会很甜；但只要对方稍微抽离，你的情绪会剧烈波动，且不易自我复位。',
+      forecast: '状态提示：先核对投入是否对等，并把朋友、爱好和作息重新放回日程。',
       warnings: ['你的情绪稳定越来越依赖对方的反馈', '正在疏远朋友/爱好，退路在变窄', '容易把「为他改变」当成爱的证明'],
       advice: ['每周留两件「只属于你」的事，雷打不动', '重新和被你冷落的朋友联系', '在心里给自己留一条「就算分开我也能活好」的底线'],
     },
   },
   {
-    range: [76, 100],
-    code: 'LV-04',
-    name: '恋爱脑晚期',
-    aka: 'ICU 级',
+    range: [62, 100],
+    code: 'RESET',
+    name: '投入过载',
+    aka: '边界需要回收',
     verdict: '说句掏心窝的：你不是不够好，是太用力了。你把自己活成了他的附属程序，是时候把主控权抢回来。',
     tags: ['#请先爱自己', '#这不是你的错', '#把自己捡回来'],
     accent: '#FF3B6B',
     deep: {
       summary:
-        '各项指标均触顶：理智区几乎离线，自我边界大面积形变，情绪完全跟随对方涨落。这通常不是因为你「恋爱脑」，而是因为你太害怕失去，于是不断用讨好和消融去换一个「他不会走」的确定感。但确定感从来不是靠消失自己换来的。',
-      forecast: '走向预测：当前模式难以持续。要么对方稳定承接，要么你会在反复的患得患失里被掏空。无论哪种，你都需要先把自己救回来。',
-      warnings: ['你的自我价值几乎全部挂靠在这段关系上', '已出现「为留住他而违背自己」的行为', '断连恢复能力告急，分离焦虑明显'],
+        '当前多项投入信号偏高：自我保留空间变小，情绪更容易跟随对方涨落。这不说明你哪里有问题，更像是你把太多确定感押在了单一关系反馈上。稳定感需要双向行动，也需要你保留自己的生活支点。',
+      forecast: '状态提示：当前投入已经影响自我空间。先降低额外加码，再观察对方是否有稳定、对等的实际回应。',
+      warnings: ['你的自我价值越来越依赖这段关系的反馈', '已出现「为了留住关系而违背自己」的行为', '断连后的恢复变慢，确认需求明显升高'],
       advice: ['这不是道德问题，是你太久没被好好爱过——先对自己温柔', '找一件能带来掌控感的小事，每天做，重建自我地基', '如果焦虑长期影响生活，请认真和信任的人聊聊，必要时寻求专业帮助'],
     },
   },
@@ -313,7 +313,7 @@ export function getBand(index) {
 // ===== 计算指数 + 五维 =====
 // 五维理论最大值（每题取该维最高增量之和），用于归一化
 const DIM_KEYS = ['rush', 'anxiety', 'dissolve', 'please', 'reason']
-const dimMax = (() => {
+export const DIM_MAX = (() => {
   const max = Object.fromEntries(DIM_KEYS.map((k) => [k, 0]))
   questions.forEach((q) => {
     const best = {}
@@ -337,11 +337,27 @@ export function computeReport(answers) {
   })
   const dims = {}
   DIM_KEYS.forEach((k) => {
-    dims[k] = dimMax[k] ? Math.round((acc[k] / dimMax[k]) * 100) : 0
+    dims[k] = DIM_MAX[k] ? Math.round((acc[k] / DIM_MAX[k]) * 100) : 0
   })
 
-  return { index, dims, band: getBand(index) }
+  const [topKey, secondaryKey] = [...DIM_KEYS].sort((a, b) => dims[b] - dims[a])
+  const evidence = answers
+    .filter((answer) => (answer?.dims?.[topKey] || 0) > 0)
+    .sort((a, b) => (b.dims?.[topKey] || 0) - (a.dims?.[topKey] || 0))
+    .slice(0, 3)
+    .map((answer) => ({ text: answer.text, read: answer.read }))
+  const sourceBand = getBand(index)
+  const band = {
+    ...sourceBand,
+    deep: {
+      ...sourceBand.deep,
+      evidence,
+      blend: `本次最高维度是「${DIM_LABELS[topKey]}」，次高维度是「${DIM_LABELS[secondaryKey]}」。它描述的是当前答题状态，不是固定人格。`,
+    },
+  }
+
+  return { index, dims, band, topKey, secondaryKey }
 }
 
-// 雷达展示顺序（理智留存放最后，正向维度）
+// 雷达展示顺序（自我保留放最后，正向保护维度）
 export const RADAR_DIMS = ['rush', 'anxiety', 'dissolve', 'please', 'reason']

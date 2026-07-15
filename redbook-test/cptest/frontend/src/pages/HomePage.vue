@@ -68,7 +68,6 @@
     </button>
     <p class="hp-note">* 娱乐测试，结果由 AI 生成，仅供参考。</p>
 
-    <CardInput :show="showCard" product="cptest" title="解锁契合度报告" @close="showCard = false" @unlocked="onUnlocked" />
   </div>
 </template>
 
@@ -77,7 +76,6 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { bfTags, gfTags } from '../data/compatibility.js'
 import Icon from '../components/Icon.vue'
-import CardInput from '../components/CardInput.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -86,7 +84,6 @@ const gfTestUrl = import.meta.env.VITE_GFTEST_URL || '/'
 
 const selBf = ref(null)
 const selGf = ref(null)
-const showCard = ref(false)
 const carriedBf = ref(false)
 const carriedGf = ref(false)
 
@@ -117,22 +114,7 @@ onMounted(() => {
 
 function go() {
   if (!selBf.value || !selGf.value) return
-  if (isUnlocked('cptest')) {
-    router.push({ path: '/result', query: { bf: selBf.value, gf: selGf.value } })
-  } else {
-    showCard.value = true
-  }
-}
-function isUnlocked(product) {
-  try {
-    const unlocked = JSON.parse(localStorage.getItem('unlocked') || '{}')
-    if (unlocked[product]?.unlocked || unlocked[product]) return true
-  } catch (_) {}
-  return document.cookie.split('; ').includes('xpytt_unlocked=1')
-}
-function onUnlocked() {
-  showCard.value = false
-  setTimeout(() => router.push({ path: '/result', query: { bf: selBf.value, gf: selGf.value } }), 300)
+  router.push({ path: '/result', query: { bf: selBf.value, gf: selGf.value } })
 }
 </script>
 

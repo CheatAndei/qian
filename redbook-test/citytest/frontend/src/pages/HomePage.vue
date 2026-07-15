@@ -8,19 +8,19 @@
 
     <section class="radar-wrap" v-motion="{ initial: { opacity: 0, scale: 0.92 }, enter: { opacity: 1, scale: 1, transition: { delay: 140, type: 'spring', stiffness: 160, damping: 20 } } }">
       <RadarScope :size="280" :labels="labels" />
-      <p class="radar-cap mono">ATLAS · 正在生成你的地点偏好图</p>
+      <p class="radar-cap mono">ATLAS · 6 类城市气质簇</p>
     </section>
 
     <div class="hero">
       <span class="badge">城市磁场测试</span>
       <h1>哪座城市<br /><em>最像你？</em></h1>
-      <p>用 20 个生活选择，找出最适合你停留、生活和出发的城市。</p>
+      <p>用 20 个生活选择，从 32 座代表城市中找出与你当前偏好更贴近的城市样本。</p>
     </div>
 
     <div class="specs">
       <div class="spec"><Icon icon="mdi:timer-sand" /><em>用时</em><b>约 3 分钟</b></div>
       <div class="spec"><Icon icon="mdi:format-list-numbered" /><em>题量</em><b>20 项</b></div>
-      <div class="spec"><Icon icon="mdi:crosshairs-gps" /><em>输出</em><b>目的地卡</b></div>
+      <div class="spec"><Icon icon="mdi:crosshairs-gps" /><em>城市池</em><b>32 座</b></div>
     </div>
 
     <button class="cta" @click="start">
@@ -28,19 +28,17 @@
       <Icon icon="mdi:crosshairs-gps" />
       <span>开始定位</span>
     </button>
-    <p class="proof mono">已定位 <b>86,430</b> 次城市磁场</p>
-
-    <p class="note">本测试由 AI 生成，仅供娱乐参考，不构成现实选择或专业建议。</p>
+    <p class="note">结果基于本次答题偏好生成，仅供娱乐和生活方式探索，不构成迁居、求职、购房或旅行建议。</p>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
 import RadarScope from '../components/RadarScope.vue'
-import { archetypes, ARCHETYPE_ORDER } from '../data/quiz.js'
+import { CLUSTERS } from '../data/quiz.js'
 
 const router = useRouter()
-const labels = ARCHETYPE_ORDER.map((k) => archetypes[k].name)
+const labels = CLUSTERS.map((cluster) => cluster.label)
 
 function start() {
   router.push('/quiz')
@@ -72,8 +70,6 @@ function start() {
 .cta :deep(svg) { font-size: 22px; }
 .cta-ring { position: absolute; inset: 0; border-radius: 16px; border: 2px solid rgba(255, 255, 255, 0.5); opacity: 0; animation: ctaRing 2.6s ease-out infinite; }
 @keyframes ctaRing { 0% { opacity: 0.45; transform: scale(0.96); } 70%, 100% { opacity: 0; transform: scale(1.04); } }
-.proof { font-size: 12px; color: var(--ink-3); margin-top: 14px; }
-.proof b { color: var(--ink-2); }
 .note { margin-top: auto; padding-top: 28px; font-size: 11px; color: var(--ink-3); text-align: center; line-height: 1.6; }
 </style>
 

@@ -6,7 +6,7 @@
     <div v-if="error" class="empty">
       <span class="empty-ic"><Icon icon="mdi:magnify" /></span>
       <h2>还没选择双方人格</h2>
-      <p>请从首页选好他和她的人格，再来看契合度档案。</p>
+      <p>请从首页选好双方的人格，再来看契合度档案。</p>
       <button class="empty-btn" @click="goHome"><Icon icon="mdi:restart" /> 回首页</button>
     </div>
 
@@ -43,57 +43,73 @@
           <span class="ms-grade">{{ grade }}</span>
           <span class="ms-cp">CP · {{ cpName }}</span>
         </div>
+        <p class="match-code mono">{{ cpCode }}</p>
         <p class="match-sub">{{ subtitle }}</p>
       </section>
 
-      <!-- 五维契合 -->
-      <section class="block rise" style="animation-delay: 180ms">
-        <p class="block-label mono"><Icon icon="mdi:chart-arc" /> 五维契合分析</p>
-        <div class="dims">
-          <div class="dim" v-for="d in result.dims" :key="d.label">
-            <span class="dim-label">{{ d.label }}</span>
-            <span class="dim-track"><i :style="{ width: d.val + '%', background: dimColor(d.val) }"></i></span>
-            <b class="dim-val mono">{{ d.val }}</b>
-          </div>
-        </div>
-      </section>
-
-      <!-- 关系评注 -->
-      <section class="block rise" style="animation-delay: 240ms">
-        <p class="block-label mono"><Icon icon="mdi:comment-quote-outline" /> 关系评注</p>
-        <div class="note-card">
-          <p>{{ desc }}</p>
-          <div class="tags"><span v-for="t in tags" :key="t" class="tag">{{ t }}</span></div>
-        </div>
-      </section>
-
-      <!-- 相处建议 -->
-      <section class="block rise" style="animation-delay: 300ms" v-if="tips.length">
-        <p class="block-label mono"><Icon icon="mdi:lightbulb-on-outline" /> 相处建议</p>
-        <ol class="tips">
-          <li v-for="(tip, i) in tips" :key="i"><span class="tip-num mono">{{ i + 1 }}</span><span>{{ tip }}</span></li>
-        </ol>
-      </section>
-
-      <!-- 雷区预警 -->
-      <section class="block rise" style="animation-delay: 340ms" v-if="warn">
-        <div class="warn-card"><Icon icon="mdi:alert-circle-outline" /><p>{{ warn }}</p></div>
-      </section>
-
-      <!-- 闺蜜锐评 -->
-      <section class="block rise" style="animation-delay: 380ms" v-if="roast">
-        <p class="block-label mono"><Icon icon="mdi:comment-quote-outline" /> 闺蜜锐评</p>
-        <div class="roast-card"><p>{{ roast }}</p></div>
-      </section>
-
-      <!-- 操作 -->
-      <div class="actions rise" style="animation-delay: 420ms">
+      <!-- 免费操作 -->
+      <div class="actions rise" style="animation-delay: 160ms">
         <button class="act retake" @click="goHome"><Icon icon="mdi:restart" /> 重新匹配</button>
         <button class="act share" @click="showShare = true"><Icon icon="mdi:image-outline" /> 生成契合卡</button>
       </div>
 
+      <!-- 深度报告 -->
+      <section class="deep-report rise" style="animation-delay: 220ms">
+        <div class="deep-head">
+          <span class="deep-kicker mono">DEEP MATCH</span>
+          <h2>关系契合深度报告</h2>
+        </div>
+        <div class="deep-wrap">
+          <div class="deep-content" :class="{ 'is-locked': !unlocked }" :aria-hidden="!unlocked">
+            <section class="block">
+              <p class="block-label mono"><Icon icon="mdi:chart-arc" /> 五维契合分析</p>
+              <div class="dims">
+                <div class="dim" v-for="d in result.dims" :key="d.label">
+                  <span class="dim-label">{{ d.label }}</span>
+                  <span class="dim-track"><i :style="{ width: d.val + '%', background: dimColor(d.val) }"></i></span>
+                  <b class="dim-val mono">{{ d.val }}</b>
+                </div>
+              </div>
+            </section>
+
+            <section class="block">
+              <p class="block-label mono"><Icon icon="mdi:comment-quote-outline" /> 关系评注</p>
+              <div class="note-card">
+                <p>{{ desc }}</p>
+                <div class="tags"><span v-for="t in tags" :key="t" class="tag">{{ t }}</span></div>
+              </div>
+            </section>
+
+            <section class="block" v-if="tips.length">
+              <p class="block-label mono"><Icon icon="mdi:lightbulb-on-outline" /> 相处建议</p>
+              <ol class="tips">
+                <li v-for="(tip, i) in tips" :key="i"><span class="tip-num mono">{{ i + 1 }}</span><span>{{ tip }}</span></li>
+              </ol>
+            </section>
+
+            <section class="block" v-if="warn">
+              <div class="warn-card"><Icon icon="mdi:alert-circle-outline" /><p>{{ warn }}</p></div>
+            </section>
+
+            <section class="block" v-if="roast">
+              <p class="block-label mono"><Icon icon="mdi:comment-quote-outline" /> 关系观察</p>
+              <div class="roast-card"><p>{{ roast }}</p></div>
+            </section>
+          </div>
+
+          <div v-if="!unlocked" class="deep-lock">
+            <span class="deep-lock-icon"><Icon icon="mdi:lock-outline" /></span>
+            <strong>完整契合档案已生成</strong>
+            <p>五维分析 · 关系评注 · 相处建议 · 雷区提示</p>
+            <button @click="showCard = true"><Icon icon="mdi:key-variant" /> 输入兑换码解锁</button>
+            <small>1.9元·15测万能卡，首次激活后同浏览器通用</small>
+          </div>
+        </div>
+        <CardInput :show="showCard" product="cptest" @close="showCard = false" @unlocked="onUnlocked" />
+      </section>
+
       <MoreTests current="cptest" />
-    <p class="disclaimer">* 本测试由 AI 生成，仅供娱乐参考。</p>
+      <p class="disclaimer">* 本测试由 AI 生成，仅供娱乐参考。</p>
 
       <!-- 分享契合卡 -->
       <transition name="ov">
@@ -108,9 +124,8 @@
               </div>
               <div class="sh-score mono">{{ result.score }}<small>契合度</small></div>
               <div class="sh-cp">{{ grade }} · CP「{{ cpName }}」</div>
-              <ul class="sh-dims">
-                <li v-for="d in result.dims" :key="d.label"><span>{{ d.label }}</span><span class="sh-bar"><i :style="{ width: d.val + '%' }"></i></span><b class="mono">{{ d.val }}</b></li>
-              </ul>
+              <p class="sh-code mono">{{ cpCode }}</p>
+              <p class="sh-preview mono">完整五维报告与相处建议已生成</p>
               <div class="sh-foot">
                 <span class="sh-seal"><Icon icon="mdi:heart-pulse" /></span>
                 <div class="sh-brand"><p>契合度测试 · 2026</p><p class="sh-brand-sub mono">扫码测测你俩的契合度</p></div>
@@ -129,6 +144,7 @@
 
 <script setup>
 import MoreTests from '../components/MoreTests.vue'
+import CardInput from '../components/CardInput.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import Icon from '../components/Icon.vue'
@@ -142,15 +158,14 @@ const error = ref(false)
 const result = ref(null)
 const showShare = ref(false)
 const shareCardRef = ref(null)
+const showCard = ref(false)
+const unlocked = ref(isUnlocked('cptest'))
 
 const bf = route.query.bf || ''
 const gf = route.query.gf || ''
 
-if (!isUnlocked('cptest')) {
-  router.replace('/')
-} else if (bf && gf) {
-  result.value = compute(bf, gf)
-} else {
+if (bf && gf) result.value = compute(bf, gf)
+if (!result.value) {
   error.value = true
 }
 
@@ -167,6 +182,7 @@ function stripEmoji(s) {
 }
 const grade = computed(() => stripEmoji(result.value?.grade))
 const cpName = computed(() => stripEmoji(result.value?.cpName))
+const cpCode = computed(() => String(result.value?.cpCode || 'PAIR-CHECK'))
 const subtitle = computed(() => stripEmoji(result.value?.subtitle))
 const desc = computed(() => result.value?.desc || '')
 const tags = computed(() => (result.value?.tags || []).map(stripEmoji).filter(Boolean))
@@ -194,6 +210,7 @@ function dimColor(v) {
   return '#a097'
 }
 function goHome() { router.replace('/') }
+function onUnlocked() { unlocked.value = true }
 
 async function saveCard() {
   if (!shareCardRef.value) return
@@ -273,6 +290,7 @@ async function saveCard() {
 .match-meta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
 .ms-grade { font-size: 12px; font-weight: 800; color: #fff; background: var(--ink); padding: 3px 12px; border-radius: 6px; }
 .ms-cp { font-size: 13px; font-weight: 800; color: var(--hers); }
+.match-code { display: inline-block; margin-top: 9px; padding: 4px 10px; border: 1px dashed color-mix(in srgb, var(--hers) 52%, transparent); border-radius: 999px; color: var(--hers); font-size: 10.5px; letter-spacing: 1.2px; }
 .match-sub { font-size: 13px; color: var(--ink-2); margin-top: 10px; line-height: 1.5; }
 
 .block { margin-top: 20px; }
@@ -300,6 +318,23 @@ async function saveCard() {
 .warn-card svg { color: var(--match); font-size: 20px; flex-shrink: 0; }
 .warn-card p { font-size: 13.5px; line-height: 1.65; color: var(--ink); }
 
+/* 深度报告 */
+.deep-report { margin-top: 24px; }
+.deep-head { text-align: center; margin-bottom: 14px; }
+.deep-kicker { color: var(--hers); font-size: 10.5px; letter-spacing: 2px; }
+.deep-head h2 { color: var(--ink); font-size: 20px; margin-top: 4px; }
+.deep-wrap { position: relative; min-height: 650px; }
+.deep-content { transition: filter 0.35s ease, opacity 0.35s ease; }
+.deep-content.is-locked { filter: blur(9px) saturate(0.7); opacity: 0.68; pointer-events: none; user-select: none; }
+.deep-content > .block:first-child { margin-top: 0; }
+.deep-lock { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; border: 1px solid var(--line-strong); border-radius: 16px; background: rgba(243, 239, 230, 0.86); backdrop-filter: blur(3px); }
+.deep-lock-icon { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; background: color-mix(in srgb, var(--hers) 12%, #fff); color: var(--hers); font-size: 25px; border: 1px solid color-mix(in srgb, var(--hers) 42%, transparent); }
+.deep-lock strong { margin-top: 11px; color: var(--ink); font-size: 18px; }
+.deep-lock p { margin-top: 6px; color: var(--ink-2); font-size: 12.5px; }
+.deep-lock button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin-top: 18px; padding: 13px 23px; border: none; border-radius: 12px; background: linear-gradient(90deg, var(--his), var(--hers)); color: #fff; font: inherit; font-size: 14px; font-weight: 800; box-shadow: 0 10px 24px color-mix(in srgb, var(--hers) 24%, transparent); }
+.deep-lock button:active { transform: scale(0.97); }
+.deep-lock small { margin-top: 11px; color: var(--ink-3); font-size: 10.5px; }
+
 .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
 .act { height: 50px; border: none; border-radius: 13px; display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 15px; font-weight: 800; }
 .act:active { transform: scale(0.97); }
@@ -320,11 +355,8 @@ async function saveCard() {
 .sh-score { font-size: 56px; font-weight: 900; line-height: 1; margin-top: 12px; background: linear-gradient(90deg, var(--his), var(--hers)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .sh-score small { font-size: 14px; color: var(--ink-3); -webkit-text-fill-color: var(--ink-3); margin-left: 4px; }
 .sh-cp { font-size: 13px; font-weight: 800; color: var(--ink); margin-top: 8px; }
-.sh-dims { list-style: none; margin: 16px 0 0; display: flex; flex-direction: column; gap: 6px; text-align: left; }
-.sh-dims li { display: grid; grid-template-columns: 56px 1fr 26px; align-items: center; gap: 8px; font-size: 11px; color: var(--ink-2); }
-.sh-bar { height: 7px; background: #ece4d6; border-radius: 99px; overflow: hidden; }
-.sh-bar i { display: block; height: 100%; background: var(--hers); border-radius: inherit; }
-.sh-dims b { font-size: 11px; color: var(--hers); text-align: right; }
+.sh-code { margin-top: 7px; color: var(--hers); font-size: 10.5px; letter-spacing: 1px; }
+.sh-preview { margin-top: 15px; border: 1px dashed color-mix(in srgb, var(--hers) 55%, transparent); border-radius: 10px; padding: 9px 11px; color: var(--hers); font-size: 10.5px; text-align: center; }
 .sh-foot { display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; text-align: left; }
 .sh-seal { width: 38px; height: 38px; border-radius: 10px; background: color-mix(in srgb, var(--hers) 12%, transparent); color: var(--hers); display: grid; place-items: center; font-size: 22px; }
 .sh-brand p { font-size: 13px; font-weight: 800; color: var(--ink); margin: 0; }

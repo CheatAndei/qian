@@ -174,6 +174,8 @@ function selectOption(i) {
     recip: opt.recip,
     text: opt.text,
     read: opt.read,
+    state: opt.state,
+    evidence: opt.evidence,
   }
   reactSig(opt.invest, true)
   setTimeout(() => goNext(), 520)

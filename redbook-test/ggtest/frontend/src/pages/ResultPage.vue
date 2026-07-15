@@ -33,7 +33,7 @@
       </div>
     </section>
 
-    <!-- 默契指数 -->
+    <!-- 友情适配指数 -->
     <section class="index">
       <div class="gauge">
         <svg viewBox="0 0 130 130">
@@ -49,7 +49,7 @@
         </svg>
         <div class="gauge-center">
           <span class="gauge-num mono" :style="{ color: report.band.accent }">{{ disp }}</span>
-          <span class="gauge-unit">默契指数 %</span>
+          <span class="gauge-unit">友情适配 %</span>
         </div>
       </div>
     </section>
@@ -84,7 +84,7 @@
         <span class="convert-ic"><Icon icon="mdi:radar" /></span>
         <span class="convert-tx">
           <strong>恋爱人格测试</strong>
-          <small>测完闺蜜默契，再扫一下你自己的恋爱人格 →</small>
+          <small>测完友情默契，再扫一下你自己的恋爱风格 →</small>
         </span>
         <Icon class="convert-arr" icon="mdi:chevron-right" />
       </button>
@@ -104,7 +104,7 @@
             <span class="rec"><i></i> 同频报告</span>
             <span class="mono">{{ report.band.code }}</span>
           </div>
-          <p class="sh-kicker mono">闺蜜同频检测</p>
+          <p class="sh-kicker mono">友情同频检测</p>
           <div class="sh-index mono" :style="{ color: report.band.accent }">
             {{ report.index }}<small>%</small>
           </div>
@@ -117,8 +117,8 @@
           <div class="sh-foot">
             <span class="sh-mark"><Icon icon="mdi:heart-multiple-outline" /></span>
             <div class="sh-brand">
-              <p>小红书搜「闺蜜同频」</p>
-              <p class="sh-brand-sub mono">把这个发给你闺蜜，测测你俩同不同频</p>
+              <p>小红书搜「友情同频」</p>
+              <p class="sh-brand-sub mono">发给一个朋友，看看你们在哪些地方同频</p>
             </div>
           </div>
         </div>
@@ -163,10 +163,10 @@ const waveSpeed = computed(() => (report.value ? 5.4 - (report.value.index / 100
 const lockState = computed(() => {
   if (!report.value) return ''
   const v = report.value.index
-  if (v >= 90) return '完全共振'
-  if (v >= 70) return '稳定锁相'
-  if (v >= 50) return '逼近锁相'
-  return '搜索频率'
+  if (v >= 58) return '多维合拍'
+  if (v >= 51) return '稳态互信'
+  if (v >= 44) return '正在校频'
+  return '各有节奏'
 })
 
 // 计数 + 环
@@ -215,7 +215,7 @@ async function saveCard() {
       useCORS: true,
     })
     const link = document.createElement('a')
-    link.download = '闺蜜同频卡.png'
+    link.download = '友情同频卡.png'
     link.href = canvas.toDataURL('image/png')
     link.click()
   } catch (e) {

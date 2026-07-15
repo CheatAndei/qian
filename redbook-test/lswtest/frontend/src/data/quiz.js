@@ -1,13 +1,13 @@
 // =============================================================
-//  依恋类型测试 · 数据层
+//  关系靠近方式测试 · 数据层
 //  零 emoji；仅供娱乐和轻量自我观察，不作诊断。
 // =============================================================
 
 export const DIM_LABELS = {
-  "secure": "安全晴稳",
-  "anxious": "焦虑雷达",
-  "avoidant": "回避离岸",
-  "mixed": "冷热切换"
+  "secure": "稳定表达",
+  "anxious": "信号敏感",
+  "avoidant": "空间需要",
+  "mixed": "靠近切换"
 }
 
 export const questions = [
@@ -805,7 +805,7 @@ export const questions = [
 export const RESULT_TYPES = {
   "secure": {
     "code": "SUN-01",
-    "name": "晴稳安全型",
+    "name": "稳定表达型",
     "aka": "靠近舒服，分开也安稳",
     "verdict": "你在亲密关系里最稀缺的能力，是能表达需要，也能保留自己。",
     "tags": [
@@ -831,7 +831,7 @@ export const RESULT_TYPES = {
   },
   "anxious": {
     "code": "RAD-07",
-    "name": "雷达过敏型",
+    "name": "信号敏感型",
     "aka": "一点风吹草动都会被你捕捉",
     "verdict": "你不是太黏人，你只是太早把安全感交给了对方的反应。",
     "tags": [
@@ -857,7 +857,7 @@ export const RESULT_TYPES = {
   },
   "avoidant": {
     "code": "OFF-04",
-    "name": "低温离岸型",
+    "name": "空间优先型",
     "aka": "需要爱，也需要安全距离",
     "verdict": "你不是没有感情，只是太近的时候，身体会先替你按下后退键。",
     "tags": [
@@ -883,7 +883,7 @@ export const RESULT_TYPES = {
   },
   "mixed": {
     "code": "MIX-12",
-    "name": "多云切换型",
+    "name": "靠近切换型",
     "aka": "一半想拥抱，一半想逃跑",
     "verdict": "你对亲密很有感觉，但靠近和自保常常同时启动。",
     "tags": [
@@ -918,6 +918,15 @@ function norm(value, max) {
   return Math.round(Math.max(0, Math.min(100, (value / max) * 100)))
 }
 
+// 每个维度按题库中可获得的理论最高分归一化，避免用“本次最高维度=100”
+// 制造虚假的满分感，也避免可得分较多的维度天然更容易成为主结果。
+const DIM_MAX = Object.fromEntries(RADAR_DIMS.map((key) => [
+  key,
+  questions.reduce((sum, question) => (
+    sum + Math.max(...question.options.map((option) => option.dims?.[key] || 0))
+  ), 0),
+]))
+
 export function computeReport(answers) {
   const raw = emptyDims()
   for (const ans of answers) {
@@ -925,12 +934,24 @@ export function computeReport(answers) {
       if (key in raw) raw[key] += value
     }
   }
-  const ordered = Object.entries(raw).sort((a, b) => b[1] - a[1])
+  const dims = Object.fromEntries(RADAR_DIMS.map((key) => [key, norm(raw[key], DIM_MAX[key])]))
+  const ordered = Object.entries(dims).sort((a, b) => b[1] - a[1])
   const primary = ordered[0]?.[0] || 'secure'
-  const band = RESULT_TYPES[primary]
-  const max = Math.max(1, ...Object.values(raw))
-  const dims = Object.fromEntries(RADAR_DIMS.map((key) => [key, norm(raw[key], max)]))
+  const secondary = ordered[1]?.[0] || 'secure'
+  const evidence = answers
+    .filter((answer) => (answer?.dims?.[primary] || 0) > 0)
+    .sort((a, b) => (b.dims?.[primary] || 0) - (a.dims?.[primary] || 0))
+    .slice(0, 3)
+    .map((answer) => ({ text: answer.text, read: answer.read }))
+  const sourceBand = RESULT_TYPES[primary]
+  const band = {
+    ...sourceBand,
+    deep: {
+      ...sourceBand.deep,
+      evidence,
+      blend: `你的次高倾向是「${DIM_LABELS[secondary]}」。同一种主倾向，在不同场景下也可能出现另一套反应。`,
+    },
+  }
   const index = Math.round(Math.max(8, Math.min(96, dims.anxious * 0.34 + dims.avoidant * 0.26 + dims.mixed * 0.32 + (100 - dims.secure) * 0.16)))
-  return { index, dims, raw, band, secondary: ordered[1]?.[0] || 'secure' }
+  return { index, dims, raw, band, primary, secondary }
 }
-

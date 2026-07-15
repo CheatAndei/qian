@@ -18,7 +18,7 @@
         你现在<br /><em>是什么状态？</em>
       </h1>
       <p v-motion="{ initial: { opacity: 0 }, enter: { opacity: 1, transition: { delay: 500 } } }">
-        单身、暧昧、养鱼、单箭头还是已脱单？<br />20 题扫描，雷达替你把信号看清楚。
+        独立待机、未确认心动、单侧投入还是稳定互选？<br />20 题扫描，先看清当前互动信号。
       </p>
     </div>
 
@@ -37,7 +37,7 @@
       <Icon icon="mdi:radar" />
       <span>开始扫描</span>
     </button>
-    <p class="proof mono">已扫描 <b>193,580</b> 次信号</p>
+    <p class="proof mono">20 个互动信号 · 主结果免费 · 万能卡解锁深报</p>
 
     <p class="note">本测试由 AI 生成，仅供娱乐参考，不构成任何专业情感或心理建议。</p>
   </div>

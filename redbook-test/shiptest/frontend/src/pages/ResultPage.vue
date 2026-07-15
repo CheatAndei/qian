@@ -26,7 +26,7 @@
         </svg>
         <div class="gauge-center">
           <span class="gauge-num mono" :style="{ color: report.archetype.accent }">{{ disp }}</span>
-          <span class="gauge-unit">情感信号强度 %</span>
+          <span class="gauge-unit">主状态清晰度 %</span>
         </div>
       </div>
     </section>
@@ -97,7 +97,7 @@
               </svg>
             </div>
 
-            <p class="sh-kicker mono">情感信号雷达 · 信号强度 {{ report.signal }}%</p>
+            <p class="sh-kicker mono">情感信号雷达 · 主状态 {{ report.signal }}%</p>
             <h2 class="sh-name" :style="{ color: report.archetype.accent }">{{ report.archetype.name }}</h2>
             <span class="sh-aka">{{ report.archetype.aka }}</span>
             <p class="sh-verdict">{{ report.archetype.verdict }}</p>
@@ -127,7 +127,7 @@ import MoreTests from '../components/MoreTests.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import gsap from 'gsap'
-import { computeReport, archetypes, ARCHETYPE_ORDER } from '../data/quiz.js'
+import { computeReport, archetypes, ARCHETYPE_ORDER, questions } from '../data/quiz.js'
 import RadarScope from '../components/RadarScope.vue'
 import DeepReport from '../components/DeepReport.vue'
 
@@ -143,7 +143,7 @@ try {
   answers = []
 }
 
-const report = computed(() => (answers.length ? computeReport(answers) : null))
+const report = computed(() => (answers.length === questions.length ? computeReport(answers) : null))
 const activeIndex = computed(() => (report.value ? ARCHETYPE_ORDER.indexOf(report.value.key) : -1))
 const coord = computed(() =>
   report.value ? `${pad(report.value.invest)}·${pad(report.value.recip)}` : '00·00'

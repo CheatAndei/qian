@@ -15,8 +15,8 @@
       <line v-for="l in 3" :key="l" class="nf-line" :x1="8" :y1="26 + l * 22" :x2="176" :y2="26 + l * 22" />
       <!-- 隐去的信息 -->
       <g :opacity="masked ? 0.35 : 1">
-        <text x="18" y="76" class="nf-tx">外冷内热档案</text>
-        <text x="18" y="96" class="nf-tx nf-tx-ds" font-size="8">CONFIDENTIAL · 仅供本人查阅</text>
+        <text x="18" y="76" class="nf-tx">反差人格档案</text>
+        <text x="18" y="96" class="nf-tx nf-tx-ds" font-size="8">CONTEXT PROFILE · 无需填写姓名</text>
       </g>
       <!-- 红烛芯 / 微光 -->
       <circle cx="282" cy="104" r="14" class="nf-core" />
@@ -24,7 +24,7 @@
       <!-- 扫瞄线 -->
       <line class="nf-scan" :class="{ paused: reduced }" x1="0" :y1="scanY" x2="320" :y2="scanY" />
     </svg>
-    <span class="nf-tag mono">外冷内热档案 · 匿名夜间</span>
+    <span class="nf-tag mono">隐藏反差值 · 4 维场景模型</span>
     <span class="nf-drp"><Icon icon="mdi:moon-waning-crescent" /></span>
   </div>
 </template>

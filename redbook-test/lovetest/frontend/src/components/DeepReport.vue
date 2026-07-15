@@ -5,25 +5,37 @@
       <h2 class="dr-title">深度监测报告</h2>
     </div>
 
-    <div class="dr-wrap">
+    <div class="dr-wrap" style="min-height: 520px">
       <!-- 报告主体（锁定时模糊 + 禁交互） -->
-      <div class="dr-content" :class="{ 'is-locked': !unlocked }" :aria-hidden="!unlocked">
+      <div v-if="unlocked" class="dr-content">
         <!-- 五维雷达 -->
         <div class="dr-card">
-          <p class="dr-card-label">恋爱脑五维图谱</p>
+          <p class="dr-card-label">心动投入五维图谱</p>
           <PentRadar :values="radarValues" :labels="radarLabels" :color="accent" />
+          <p class="dr-scale-note">“自我保留”是保护维度，越高越稳；其余维度越高，代表本次占用越明显。</p>
         </div>
 
         <!-- 监测结论 -->
         <div class="dr-card">
-          <p class="dr-card-label">监测结论</p>
+          <p class="dr-card-label">本次状态解读</p>
           <p class="dr-text">{{ report.summary }}</p>
           <p class="dr-forecast">{{ report.forecast }}</p>
+          <p class="dr-forecast">{{ report.blend }}</p>
+        </div>
+
+        <div class="dr-card" v-if="report.evidence?.length">
+          <p class="dr-card-label">答案证据</p>
+          <ul class="dr-list">
+            <li v-for="(item, i) in report.evidence" :key="i">
+              <Icon icon="mdi:message-text-outline" />
+              <span>{{ item.text }}<small v-if="item.read"> · {{ item.read }}</small></span>
+            </li>
+          </ul>
         </div>
 
         <!-- 行为预警 -->
         <div class="dr-card">
-          <p class="dr-card-label">行为预警</p>
+          <p class="dr-card-label">行为提醒</p>
           <ul class="dr-list dr-list--warn">
             <li v-for="(w, i) in report.warnings" :key="i">
               <Icon icon="mdi:alert-octagon-outline" />
@@ -34,7 +46,7 @@
 
         <!-- 调节建议 -->
         <div class="dr-card">
-          <p class="dr-card-label">调节建议</p>
+          <p class="dr-card-label">调整建议</p>
           <ul class="dr-list dr-list--ok">
             <li v-for="(a, i) in report.advice" :key="i">
               <Icon icon="mdi:check-decagram-outline" />
@@ -48,7 +60,7 @@
       <div class="dr-lock" v-if="!unlocked">
         <span class="dr-lock-icon"><Icon icon="mdi:lock-outline" /></span>
         <p class="dr-lock-title">深度报告未解锁</p>
-        <p class="dr-lock-desc">五维图谱 · 行为预警 · 专属调节方案</p>
+        <p class="dr-lock-desc">答案证据 · 主次维度 · 边界调整方案</p>
         <button class="dr-lock-btn" @click="showCard = true">
           <Icon icon="mdi:key-variant" />
           <span>输入兑换码解锁</span>
@@ -136,6 +148,12 @@ function onUnlocked() {
   letter-spacing: 1px;
   color: var(--ink-2);
   margin-bottom: 12px;
+}
+.dr-scale-note {
+  margin-top: 10px;
+  color: var(--ink-3);
+  font-size: 10.5px;
+  line-height: 1.55;
 }
 .dr-text {
   font-size: 14px;

@@ -1,14 +1,14 @@
 // =============================================================
-//  情绪内耗指数 · 数据层
+//  情绪后台占用 · 数据层
 //  零 emoji；仅供娱乐和轻量自我观察，不作诊断。
 // =============================================================
 
 export const DIM_LABELS = {
   "rumination": "反复咀嚼",
   "selfBlame": "自我责备",
-  "anticipation": "预演焦虑",
-  "suppression": "情绪压抑",
-  "recovery": "恢复能力"
+  "anticipation": "提前预演",
+  "suppression": "情绪压住",
+  "recovery": "恢复线索"
 }
 
 export const questions = [
@@ -106,7 +106,7 @@ export const questions = [
         "read": "降载策略生效"
       },
       {
-        "text": "会焦虑，但还能开始",
+        "text": "会着急，但还能开始",
         "score": 1,
         "dims": {
           "anticipation": 1
@@ -817,7 +817,8 @@ export const questions = [
 
 export const RESULT_BANDS = [
   {
-    "max": 24,
+    "key": "clear",
+    "max": 43,
     "code": "LOW-18",
     "name": "低噪运行",
     "aka": "后台干净，偶尔弹窗",
@@ -830,9 +831,10 @@ export const RESULT_BANDS = [
     "verdict": "你的情绪系统大多能自己完成清理，不太会让小事长期占住内存。"
   },
   {
-    "max": 49,
+    "key": "occupied",
+    "max": 50,
     "code": "MID-42",
-    "name": "轻度后台占用",
+    "name": "轻量后台占用",
     "aka": "能正常运转，但有些进程没关",
     "accent": "#DDB95B",
     "tags": [
@@ -843,9 +845,10 @@ export const RESULT_BANDS = [
     "verdict": "你不是一直在内耗，只是某些场景会偷偷打开几个常驻进程。"
   },
   {
-    "max": 74,
+    "key": "loop",
+    "max": 57,
     "code": "HOT-68",
-    "name": "高负载循环",
+    "name": "循环任务偏多",
     "aka": "表面在生活，脑内在跑批处理",
     "accent": "#D99058",
     "tags": [
@@ -856,6 +859,7 @@ export const RESULT_BANDS = [
     "verdict": "很多消耗不是来自事情本身，而是你一直在脑内追加解释、预案和责任。"
   },
   {
+    "key": "overload",
     "max": 100,
     "code": "OVR-91",
     "name": "过热待机",
@@ -877,6 +881,45 @@ export const RADAR_DIMS = [
   "recovery"
 ]
 
+const LOAD_DIMS = RADAR_DIMS.slice(0, 4)
+
+export const DIM_MAX = Object.fromEntries(
+  RADAR_DIMS.map((key) => [
+    key,
+    questions.reduce(
+      (sum, question) => sum + Math.max(...question.options.map((option) => option.dims?.[key] || 0)),
+      0,
+    ),
+  ]),
+)
+
+const MECHANISM_PROFILES = {
+  rumination: {
+    pattern: '事情结束后，注意力仍会回到同一段细节，试图找出一个更完整的解释。',
+    cost: '重复回看会占用休息和行动空间，但继续想不一定会带来新信息。',
+    warnings: ['留意“再想一遍就能确定”的冲动。', '复盘没有新增事实时，可以先把它视为重复任务。'],
+    advice: ['写下事实、自己的解释、下一步各一行。', '给复盘设10分钟结束点，到点后换成身体活动。'],
+  },
+  selfBlame: {
+    pattern: '出现摩擦或失误时，你容易先把责任收回自己身上，再检查自己哪里做得不够好。',
+    cost: '过快归责会遮住情境、资源和他人责任，让修正变成对自己的持续消耗。',
+    warnings: ['“我可以改进”不等于“都是我的错”。', '先确认责任范围，再决定要不要道歉或补救。'],
+    advice: ['把责任拆成我能负责、他人负责、环境限制三栏。', '用“这次哪里没奏效”替代“我怎么这么差”。'],
+  },
+  anticipation: {
+    pattern: '事情还没发生时，你会先模拟多种走向，希望提前避免失控或尴尬。',
+    cost: '预案太多会让尚未发生的事提前消耗真实精力，也可能推迟第一步。',
+    warnings: ['区分可准备的风险与暂时无法验证的猜测。', '准备一个可行方案后，不必继续穷举全部坏情况。'],
+    advice: ['只保留最可能、最可处理的一个预案。', '先做一个5分钟动作，用现实反馈替代继续模拟。'],
+  },
+  suppression: {
+    pattern: '你倾向先维持正常运转，把感受放到后台，等有空或安全时再处理。',
+    cost: '暂时压住能帮助过关，但长期没有出口时，疲惫可能以走神、拖延或突然没电出现。',
+    warnings: ['能撑住不代表已经恢复。', '感受不必立刻解决，但需要一个被看见的时间。'],
+    advice: ['每天用一句话标记“我现在更接近什么感受”。', '选择低压力出口：散步、写几行或告诉可信任的人“我今天有点满”。'],
+  },
+}
+
 function emptyDims() {
   return Object.fromEntries(RADAR_DIMS.map((k) => [k, 0]))
 }
@@ -890,28 +933,49 @@ function norm(value, max) {
 }
 
 export function computeReport(answers) {
+  const safeAnswers = Array.isArray(answers) ? answers : []
   const raw = emptyDims()
-  for (const ans of answers) {
+  for (const ans of safeAnswers) {
     for (const [key, value] of Object.entries(ans?.dims || {})) {
-      if (key in raw) raw[key] += value
+      if (key in raw) raw[key] += Number(value || 0)
     }
   }
-  const load = raw.rumination * 0.27 + raw.selfBlame * 0.24 + raw.anticipation * 0.24 + raw.suppression * 0.2
-  const relief = raw.recovery * 0.18
-  const index = Math.round(Math.max(0, Math.min(100, 18 + load * 3.25 - relief * 2.2)))
-  const max = Math.max(1, ...Object.values(raw))
-  const dims = Object.fromEntries(RADAR_DIMS.map((key) => [key, norm(raw[key], max)]))
-  const topKey = Object.entries(raw).sort((a, b) => b[1] - a[1])[0]?.[0] || RADAR_DIMS[0]
+  const totalScore = safeAnswers.reduce((sum, answer) => sum + Number(answer?.score || 0), 0)
+  const maxScore = Math.max(1, questions.length * 3)
+  const index = Math.round(Math.max(0, Math.min(100, (totalScore / maxScore) * 100)))
+  const dims = Object.fromEntries(RADAR_DIMS.map((key) => [key, norm(raw[key], DIM_MAX[key])]))
+  const rankedLoad = LOAD_DIMS
+    .map((key) => ({ key, value: dims[key] }))
+    .sort((a, b) => b.value - a.value)
+  const topKey = rankedLoad[0]?.key || LOAD_DIMS[0]
+  const secondaryKey = rankedLoad[1]?.key || LOAD_DIMS[1]
   const topLabel = DIM_LABELS[topKey] || topKey
+  const secondaryLabel = DIM_LABELS[secondaryKey] || secondaryKey
+  const profile = MECHANISM_PROFILES[topKey]
+  const evidence = safeAnswers
+    .filter((answer) => Number(answer?.dims?.[topKey] || 0) > 0)
+    .sort((a, b) => Number(b.dims?.[topKey] || 0) - Number(a.dims?.[topKey] || 0))
+    .slice(0, 2)
+    .map((answer) => `“${answer.text}”`)
+  const recoveryEvidence = safeAnswers
+    .filter((answer) => Number(answer?.dims?.recovery || 0) > 0)
+    .sort((a, b) => Number(b.dims?.recovery || 0) - Number(a.dims?.recovery || 0))
+    .slice(0, 2)
+    .map((answer) => `“${answer.text}”`)
+  const recoveryLevel = dims.recovery >= 55 ? '恢复线索比较明确' : dims.recovery >= 25 ? '已经有一些恢复线索' : '恢复线索暂时较少'
   const band = {
     ...pickBand(index),
     deep: {
-      summary: `你的主要后台进程是「${topLabel}」。它不一定最吵，但最容易在你没注意时占住资源。`,
-      forecast: '当任务、关系和自我要求同时堆上来时，后台占用会明显升高。先降载，再处理问题，会比硬撑更有效。',
-      warnings: ['不要把休息误判成偷懒，系统需要维护窗口。', '如果反复复盘已经影响睡眠，先停止追求“想明白”。', '持续强烈痛苦时，建议向可信任的人或专业人士求助。'],
-      advice: ['把脑内循环写成三列：事实、猜测、下一步。', '每天留一个不解决问题的空档，只做恢复。', '先完成一个 5 分钟动作，不要等状态完美。']
+      primaryLabel: topLabel,
+      secondaryLabel,
+      summary: `本次选择里更突出的耗损机制是「${topLabel}」，其次是「${secondaryLabel}」。${profile.pattern}`,
+      forecast: `这是对本次答案的整理，不预测未来，也不作状态诊断。当前${recoveryLevel}；${profile.cost}`,
+      evidence: evidence.length ? evidence : ['本次选择中没有集中命中某一条耗损描述，主维度来自整体相对分布。'],
+      recoveryEvidence: recoveryEvidence.length ? recoveryEvidence : ['本次选择中较少出现明确的主动恢复做法，可从一个低成本动作开始补充。'],
+      warnings: [...profile.warnings, '如果这些循环持续影响睡眠或日常，可以考虑向可信任的人或专业支持求助。'],
+      advice: [...profile.advice, '每天留一段不解决问题的空档，只做恢复。'],
     },
   }
-  return { index, dims, raw, band, topKey }
+  return { index, dims, raw, band, topKey, secondaryKey }
 }
 

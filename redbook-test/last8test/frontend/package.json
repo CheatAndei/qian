@@ -1,0 +1,20 @@
+{
+  "name": "last8test",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test:model": "node scripts/check-last8-model.mjs"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "vue": "^3.5.34",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.6",
+    "vite": "^8.0.12"
+  }
+}

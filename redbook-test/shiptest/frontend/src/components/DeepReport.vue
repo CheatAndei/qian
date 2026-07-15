@@ -5,8 +5,8 @@
       <h2 class="dr-title">深度信号报告</h2>
     </div>
 
-    <div class="dr-wrap">
-      <div class="dr-content" :class="{ 'is-locked': !unlocked }" :aria-hidden="!unlocked">
+    <div class="dr-wrap" style="min-height: 520px">
+      <div v-if="unlocked" class="dr-content">
         <!-- 信号分布 -->
         <div class="dr-card">
           <p class="dr-card-label">各状态信号占比</p>
@@ -29,6 +29,16 @@
           <p class="dr-card-label">信号研判</p>
           <p class="dr-text">{{ report.summary }}</p>
           <p class="dr-forecast">{{ report.forecast }}</p>
+        </div>
+
+        <div class="dr-card" v-if="report.evidence?.length">
+          <p class="dr-card-label">本次答案证据</p>
+          <ul class="dr-list dr-list--evidence">
+            <li v-for="(item, i) in report.evidence" :key="i">
+              <Icon icon="mdi:radar" />
+              <span>{{ item }}</span>
+            </li>
+          </ul>
         </div>
 
         <!-- 避雷预警 -->
@@ -58,7 +68,7 @@
       <div class="dr-lock" v-if="!unlocked">
         <span class="dr-lock-icon"><Icon icon="mdi:lock-outline" /></span>
         <p class="dr-lock-title">深度信号报告未解锁</p>
-        <p class="dr-lock-desc">状态占比 · 走向预测 · 避雷与行动方案</p>
+        <p class="dr-lock-desc">状态占比 · 答案证据 · 边界与行动方案</p>
         <button class="dr-lock-btn" @click="showCard = true">
           <Icon icon="mdi:key-variant" />
           <span>输入兑换码解锁</span>
@@ -208,6 +218,9 @@ function onUnlocked() {
   color: var(--warn);
 }
 .dr-list--ok :deep(svg) {
+  color: var(--accent);
+}
+.dr-list--evidence :deep(svg) {
   color: var(--accent);
 }
 .dr-lock {

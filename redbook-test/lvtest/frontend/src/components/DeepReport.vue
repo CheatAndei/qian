@@ -5,9 +5,9 @@
       <h2 class="dr-title">{{ copy.title }}</h2>
     </div>
 
-    <div class="dr-wrap">
-      <div class="dr-content" :class="{ 'is-locked': !unlocked }" :aria-hidden="!unlocked">
-        <!-- 层级分布 -->
+    <div class="dr-wrap" style="min-height: 520px">
+      <div v-if="unlocked" class="dr-content">
+        <!-- 状态分布 -->
         <div class="dr-card">
           <p class="dr-card-label">{{ copy.distribution }}</p>
           <div class="bars">
@@ -24,7 +24,7 @@
           </div>
         </div>
 
-        <!-- 节奏解读 -->
+        <!-- 深度与状态解读 -->
         <div class="dr-card">
           <p class="dr-card-label">{{ copy.analysis }}</p>
           <p class="dr-text">{{ report.summary }}</p>
@@ -81,20 +81,20 @@ const props = defineProps({
   distribution: { type: Array, default: () => [] },
   topKey: { type: String, default: '' },
   accent: { type: String, default: '#36F1A6' },
-  product: { type: String, default: 'shiptest' },
+  product: { type: String, default: 'lvtest' },
 })
 
 const { unlocked, refresh } = useUnlock(props.product)
 const showCard = ref(false)
 const copy = computed(() => ({
   kicker: 'LEVEL REPORT',
-  title: '亲密等级深报',
-  distribution: '亲密层级占比',
-  analysis: '关系节奏解读',
+  title: '亲密状态深报',
+  distribution: '关系状态信号占比',
+  analysis: '深度与状态解读',
   warning: '降温提醒',
   advice: '升温建议',
-  lockTitle: '亲密等级深报未解锁',
-  lockDesc: '层级占比 · 节奏解读 · 降温提醒与升温建议',
+  lockTitle: '亲密状态深报未解锁',
+  lockDesc: '状态占比 · 触发证据 · 降温提醒与升温建议',
 }))
 function onUnlocked() {
   refresh()

@@ -5,12 +5,12 @@
     <!-- 刊头 -->
     <header class="hp-masthead rise" style="animation-delay: 40ms">
       <span class="hp-live"><i></i> 出刊中</span>
-      <span class="hp-pub mono">LOVE PERSONA · 恋爱人格</span>
+      <span class="hp-pub mono">LOVE STYLE · 恋爱风格</span>
       <span class="hp-sig"><Icon icon="mdi:newspaper-variant-outline" /></span>
     </header>
     <div class="hp-ticker rise" style="animation-delay: 80ms" aria-hidden="true">
       <div class="hp-ticker-row">
-        <span v-for="n in 2" :key="n" class="mono">本期特辑 · 12 种恋爱人格 · 女王范 / 温柔 / 猫系 / 撩人精 / 事业型 · 五维人格雷达 · 主结果免费 · </span>
+        <span v-for="n in 2" :key="n" class="mono">本期特辑 · 12 种恋爱风格 · 稳定 / 温柔 / 慢热 / 表达 / 独立 · 五维风格雷达 · 主结果免费 · </span>
       </div>
     </div>
 
@@ -21,28 +21,28 @@
 
     <!-- 读数 -->
     <div class="hp-stats">
-      <div class="hp-stat rise" style="animation-delay: 230ms"><b class="mono">{{ statA }}</b><em>种人格</em></div>
+      <div class="hp-stat rise" style="animation-delay: 230ms"><b class="mono">{{ statA }}</b><em>种风格</em></div>
       <div class="hp-stat rise" style="animation-delay: 290ms"><b class="mono">{{ statB }}</b><em>道题目</em></div>
       <div class="hp-stat rise" style="animation-delay: 350ms"><b class="mono">5</b><em>维档案</em></div>
     </div>
 
     <!-- 标题 -->
     <main class="hp-hero">
-      <span class="hp-badge rise" style="animation-delay: 320ms"><Icon icon="mdi:bookmark-outline" /> 本期人格特辑</span>
+      <span class="hp-badge rise" style="animation-delay: 320ms"><Icon icon="mdi:bookmark-outline" /> 本期风格特辑</span>
       <h1>
         <span class="rise" style="animation-delay: 380ms">你是哪种</span>
-        <em class="rise" style="animation-delay: 460ms">恋爱人格？</em>
+        <em class="rise" style="animation-delay: 460ms">恋爱风格？</em>
       </h1>
       <p class="rise" style="animation-delay: 560ms">
-        30 道恋爱场景，拍下你在亲密关系里的真实样子。生成一张专属人格刊，附五维雷达和人设标签，发给他、发给闺蜜都好看。
+        30 道恋爱场景，记录你在亲密关系里的回应习惯。生成一张专属风格刊，附五维雷达和风格标签，分享给 TA 或好友都合适。
       </p>
     </main>
 
     <!-- 栏目 -->
     <div class="hp-specs">
-      <div class="hp-spec rise" style="animation-delay: 620ms"><Icon icon="mdi:account-heart-outline" /><em>人设</em><b>12 款档案</b></div>
-      <div class="hp-spec rise" style="animation-delay: 680ms"><Icon icon="mdi:chart-arc" /><em>雷达</em><b>五维人格</b></div>
-      <div class="hp-spec rise" style="animation-delay: 740ms"><Icon icon="mdi:camera-iris" /><em>分享</em><b>杂志人格卡</b></div>
+      <div class="hp-spec rise" style="animation-delay: 620ms"><Icon icon="mdi:account-heart-outline" /><em>风格</em><b>12 款档案</b></div>
+      <div class="hp-spec rise" style="animation-delay: 680ms"><Icon icon="mdi:chart-arc" /><em>雷达</em><b>五维风格</b></div>
+      <div class="hp-spec rise" style="animation-delay: 740ms"><Icon icon="mdi:camera-iris" /><em>分享</em><b>杂志风格卡</b></div>
     </div>
 
     <!-- CTA -->
@@ -51,8 +51,8 @@
       <span class="hp-cta-label">翻开本期测试</span>
       <span class="hp-cta-ic"><Icon icon="mdi:book-open-page-variant-outline" /></span>
     </button>
-    <p class="hp-proof mono">已有不少女生收录进本期人格刊</p>
-    <p class="hp-note">* 娱乐测试，结果由 AI 生成，仅供参考，别太较真。</p>
+    <p class="hp-proof mono">31 项场景 · 主结果免费 · 万能卡解锁深报</p>
+    <p class="hp-note">* AI 娱乐测试，仅描述本次选择，不构成心理判断或关系建议。</p>
   </div>
 </template>
 

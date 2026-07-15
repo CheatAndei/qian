@@ -26,7 +26,7 @@ export const questions = [
       { text: '没有聊得特别频繁的', invest: 0, recip: 0, read: '信道空闲' },
       { text: '暗恋对象，但没怎么敢主动聊', invest: 3, recip: 1, read: '发射强 · 回波弱' },
       { text: '互有来回的暧昧对象', invest: 3, recip: 3, read: '信道双工 · 稳定' },
-      { text: '好几个备胎轮着聊', invest: 1, recip: 3, read: '多信道接入 · 我方被动' },
+      { text: '对方同时和几个人保持暧昧联系', invest: 1, recip: 3, read: '多信道接入 · 我方被动' },
     ],
   },
   {
@@ -229,109 +229,127 @@ export const questions = [
   },
 ]
 
+// 每个答案记录一个可解释的当前状态信号。它比把所有选择压成二维坐标更稳定，
+// 也能告诉用户“哪些答案把结果推向了这里”。
+const ONE_WAY_OVERLOAD_QUESTIONS = new Set([3, 5, 7, 8, 10, 11, 12, 13, 14, 17, 18, 19])
+const STABLE_MUTUAL_QUESTIONS = new Set([7, 8, 10, 11, 12, 13, 14, 16, 17, 18, 19])
+
+for (const question of questions) {
+  question.options.forEach((option, index) => {
+    let state = 'solo'
+    if (index === 1) state = ONE_WAY_OVERLOAD_QUESTIONS.has(question.id) ? 'licking' : 'crush'
+    if (index === 2) state = STABLE_MUTUAL_QUESTIONS.has(question.id) ? 'stable' : 'ambiguous'
+    if (index === 3) state = 'fishpond'
+    if (question.id === 6 && index === 3) state = 'stable'
+    if (question.id === 16 && index === 1) state = 'ambiguous'
+    option.state = state
+    option.evidence = question.spec
+  })
+}
+
 // ===== 6 种情感状态（archetype）=====
 // proto: [invest, recip] 0–100 原型坐标；angle 决定雷达扇区方位
 export const archetypes = {
   solo: {
     key: 'solo',
-    name: '单身待机',
+    name: '独立待机',
     aka: '信号自洽型',
     signalLabel: '独立运行',
     proto: [16, 20],
     accent: '#36F1A6',
-    verdict: '你不是没人要，是没把雷达开给随便谁。一个人能过得自洽，是被很多人羡慕的能力。',
+    verdict: '你的注意力目前主要留给自己。能独立安排生活，也愿意等到真正想靠近的人出现。',
     tags: ['#单身不等于落单', '#自给自足', '#在等对的频率'],
     deep: {
       summary:
         '雷达显示你当前几乎没有对外发射，也没有锁定任何回波——这是一个非常稳定的独立态。你不靠暧昧续命，也不靠别人确认自己的价值。这种状态最大的好处是：你下一次出手，多半是因为真的合适，而不是因为孤单。',
-      forecast: '走向预测：你大概率会保持挑剔，直到出现一个值得你开机的人。别被「该脱单了」的声音逼着将就。',
+      forecast: '状态提示：独立不是封闭。保持标准的同时，也可以给真诚的新连接一个低压力窗口。',
       warnings: ['偶尔会把「自洽」用成「不给任何人机会」的盾牌', '错把所有靠近都当打扰，可能漏掉真信号'],
       advice: ['保持标准，但给真诚靠近的人一点回应窗口', '主动认识新的人 ≠ 妥协，只是扩大样本', '享受当下，脱单不是人生 KPI'],
     },
   },
   crush: {
     key: 'crush',
-    name: '单箭头暗恋',
+    name: '未确认心动',
     aka: '单向发射型',
     signalLabel: '强发射 · 弱回波',
     proto: [82, 22],
     accent: '#36F1A6',
-    verdict: '你的雷达死死锁着一个人，可惜回波一直很弱。暗恋最累的地方，是你一个人演完了整部剧。',
+    verdict: '你的注意力集中在一个人身上，但目前收到的回应还不足以确认关系方向。',
     tags: ['#暗恋ing', '#单方面上头', '#该出手了'],
     deep: {
       summary:
         '你在持续向一个特定目标发射强信号，但接收到的回波很弱——这是典型的单箭头。你把大量注意力、情绪、脑补都投在对方身上，而对方可能根本没意识到，或假装没意识到。暗恋本身很美，但长期单向发射会耗光你的电。',
-      forecast: '走向预测：要么找机会试探一次拿到真实回波，要么这段信号会在自我消耗中慢慢衰减。最怕的是无限期挂起。',
+      forecast: '状态提示：用一次低成本、可退出的邀请验证回应，比长期脑补更能保护你的精力。',
       warnings: ['容易把对方的礼貌当信号，过度解读', '为一个未确认的人推掉现实里的其他可能'],
       advice: ['用低成本方式试探一次回应，别赌上全部', '给自己设一个止损期限，到点就撤', '把投在脑补里的电，分一点回到自己生活上'],
     },
   },
   licking: {
     key: 'licking',
-    name: '舔狗本狗',
-    aka: '过载付出型',
-    signalLabel: '满功率发射 · 入不敷出',
+    name: '单侧过载',
+    aka: '高投入低回声型',
+    signalLabel: '投入偏高 · 回应不足',
     proto: [95, 40],
     accent: '#FF5C7A',
-    verdict: '说句重的：你不是不够好，是把自己贱卖了。一直加倍付出去换一点回应，这买卖你血亏。',
-    tags: ['#别舔了', '#你值得对等的爱', '#收回点电'],
+    verdict: '你投入了很多注意力和照顾，但目前的回应不够稳定。先把电量收回一点，才能看清是否对等。',
+    tags: ['#单侧过载', '#需要对等回应', '#收回一点电'],
     deep: {
       summary:
-        '你的发射功率几乎拉满，但收到的回波远远配不上你的投入——长期处在「我付出 100，他回应 20」的不对等里。你可能在用过度付出去换一个「他不会走」的安全感，但越用力，对方越习惯，越不珍惜。这不是爱情，是单方面的供养。',
-      forecast: '走向预测：维持现状只会让落差越来越大。真正的转机，是你开始把电收回来，看看对方有没有主动靠近的能力。',
-      warnings: ['你的自我价值正高度绑定在对方的回应上', '已经出现「跪着也要留住他」的行为', '朋友可能早就看不下去了'],
-      advice: ['停止加码，把付出降到对等水平，观察对方反应', '一个需要你舔才能维持的关系，本身就是答案', '把注意力挪回自己身上，你会发现选择比你以为的多'],
+        '多道答案都指向“你主动维持、对方回应较少”。这不说明谁好谁坏，但说明你需要把投入与实际回声放在一起看，而不是只看偶尔的高光时刻。',
+      forecast: '状态提示：把付出降到可持续水平，观察对方是否会主动靠近、兑现约定和承担关系责任。',
+      warnings: ['容易把偶尔回应当成长期承诺', '过度付出会让自己的边界越来越模糊'],
+      advice: ['暂停额外加码，记录一周内双方主动和兑现情况', '明确说出一个真实需求，不用试探代替沟通', '把时间重新分给朋友、睡眠和自己的计划'],
     },
   },
   ambiguous: {
     key: 'ambiguous',
-    name: '暧昧拉扯',
+    name: '双向未确认',
     aka: '连接未确认型',
     signalLabel: '双向逼近 · 未锁定',
     proto: [66, 60],
     accent: '#36F1A6',
-    verdict: '你俩信号来来回回挺热闹，就是没人按下「确认」。暧昧最上头，也最磨人——它给你甜，但不给你保证。',
+    verdict: '双方都有来回，但关系边界尚未确认。甜是真的，不确定也是真的。',
     tags: ['#暧昧拉扯中', '#就差一层窗户纸', '#甜并焦虑着'],
     deep: {
       summary:
         '你和对方在持续互相发射、互相回应，信号强度都不低，但连接始终没有正式锁定——典型的暧昧拉扯。这个阶段最甜也最累：每一次回应都让你上头，每一次冷淡都让你患得患失。暧昧的本质是「双方都还在观望，谁都不想先承担风险」。',
-      forecast: '走向预测：暧昧有保质期。要么有人主动确认升级，要么久拖之后热度散去。拖得越久，先动心的那个越被动。',
+      forecast: '状态提示：比猜测更有效的是一次温和确认，了解双方是否想把关系往同一方向推进。',
       warnings: ['长期暧昧会消耗信任，把好感拖成疲惫', '不确认就没有边界，容易受伤也容易被换'],
       advice: ['找一个合适的时机，温和但明确地确认一次关系', '观察对方是「在了解」还是「在拖延」，两者待遇不同', '给暧昧设一个心理期限，别无限投入一个不给名分的人'],
     },
   },
   stable: {
     key: 'stable',
-    name: '稳定在轨',
+    name: '稳定互选',
     aka: '双向锁定型',
     signalLabel: '连接已锁定 · 同步稳定',
     proto: [88, 90],
     accent: '#5BFFC0',
-    verdict: '雷达上你俩信号互锁、稳定同步——这是最让人羡慕的状态。别凡尔赛了，好好珍惜对面那个人。',
+    verdict: '你们的信号有来有回，也有持续性。稳定不是满分证明，而是双方持续回应的结果。',
     tags: ['#已脱单', '#稳定供电', '#双向奔赴'],
     deep: {
       summary:
         '你和对方的信号互相锁定，收发稳定、回波同步——这是一段健康在轨的关系。你既能投入，也能收到对等的回应，不靠拉扯续命，不靠脑补维持。这种稳定不是理所当然的，它需要双方持续地校准和投入。',
-      forecast: '走向预测：只要双方都不把稳定当成可以偷懒的理由，这段关系会越走越顺。最大的敌人是「习惯」带来的忽视。',
+      forecast: '状态提示：继续保留表达、修复和各自空间，避免把稳定误当成不需要经营。',
       warnings: ['稳定久了容易把对方的好当默认值', '减少主动经营，信号也会慢慢失同步'],
       advice: ['定期给关系「校准」：表达、惊喜、好好说话', '把对方的付出说出来，别让 ta 觉得理所当然', '保持各自的生活，稳定不等于黏成一个人'],
     },
   },
   fishpond: {
     key: 'fishpond',
-    name: '养鱼塘主',
+    name: '多线保留',
     aka: '多接入保留型',
     signalLabel: '多目标接入 · 我方保留',
     proto: [30, 80],
     accent: '#FFB020',
-    verdict: '身边不缺人，但你一个都没动真格——塘里鱼不少，就是没下决心捞哪条。爽是爽，小心哪天没人陪你玩真的。',
-    tags: ['#养鱼塘主', '#不缺人就是不动心', '#小心空欢喜'],
+    verdict: '你接收到不止一个方向的关注，但暂时没有把投入集中到某段关系里。',
+    tags: ['#多线保留', '#低承诺观察', '#先说清边界'],
     deep: {
       summary:
-        '你接收到不少来自不同方向的回波，但自己的发射功率一直压得很低——你享受被很多人喜欢，却没有对谁真正投入。这种「养鱼」状态给你很强的安全感和掌控感，但也让你停留在浅层连接里，迟迟进入不了真正的关系。',
-      forecast: '走向预测：鱼塘热闹得了一时。等你真正想认真时，可能会发现自己已经习惯了不投入，或者好的那条鱼早已离开。',
-      warnings: ['习惯了被追，可能丧失主动投入的能力', '广撒网容易在某一天集体散场，留下空落感', '被你「养着」的人，未必会一直等'],
-      advice: ['诚实面对：你是在保护自己，还是在逃避认真？', '如果塘里真有让你心动的，试着只对 ta 加大功率', '别用别人的喜欢来填自己的空，那填不满'],
+        '当前答案更像“保持多个浅连接，同时保留自己的选择”。它可能来自尚未遇到想认真靠近的人，也可能是对承诺和受伤风险的谨慎。',
+      forecast: '状态提示：只要边界透明，多线认识并不等于伤害；真正需要避免的是让别人误以为关系已经排他。',
+      warnings: ['模糊边界容易制造不必要的误会', '长期只接收关注，可能忽略自己真正想要什么'],
+      advice: ['对正在接触的人说明当前关系边界', '区分“我还在了解”与“我不想投入”', '出现真正想靠近的人时，减少分散注意力并观察双向行动'],
     },
   },
 }
@@ -340,28 +358,75 @@ export const archetypes = {
 export const ARCHETYPE_ORDER = ['solo', 'crush', 'licking', 'ambiguous', 'stable', 'fishpond']
 
 const MAX_AXIS = questions.length * 3
+const STATE_OPTION_COUNTS = questions
+  .flatMap((question) => question.options)
+  .reduce((counts, option) => {
+    counts[option.state] = (counts[option.state] || 0) + 1
+    return counts
+  }, {})
+
+function inferLegacyState(answer) {
+  if (ARCHETYPE_ORDER.includes(answer?.state)) return answer.state
+  const invest = Number(answer?.invest || 0)
+  const recip = Number(answer?.recip || 0)
+  if (invest === 0 && recip === 0) return 'solo'
+  if (invest >= 2 && recip <= 1) return 'crush'
+  if (invest >= 2 && recip >= 3) return 'stable'
+  if (invest >= 2 && recip >= 2) return 'ambiguous'
+  if (invest <= 1 && recip >= 2) return 'fishpond'
+  return 'ambiguous'
+}
+
+function toPercentDistribution(scored, total) {
+  const rows = scored.map((item) => {
+    const exact = total ? (item.count / total) * 100 : 0
+    return { ...item, pct: Math.floor(exact), remainder: exact - Math.floor(exact) }
+  })
+  let left = 100 - rows.reduce((sum, row) => sum + row.pct, 0)
+  for (const row of [...rows].sort((a, b) => b.remainder - a.remainder)) {
+    if (left <= 0) break
+    row.pct += 1
+    left -= 1
+  }
+  return rows.map(({ remainder, ...row }) => row)
+}
 
 export function computeReport(answers) {
   const sumInvest = answers.reduce((s, a) => s + (a.invest || 0), 0)
   const sumRecip = answers.reduce((s, a) => s + (a.recip || 0), 0)
   const invest = Math.round((sumInvest / MAX_AXIS) * 100)
   const recip = Math.round((sumRecip / MAX_AXIS) * 100)
-  const signal = invest
+  const counts = Object.fromEntries(ARCHETYPE_ORDER.map((key) => [key, 0]))
+  for (const answer of answers) counts[inferLegacyState(answer)] += 1
 
-  // 与各原型的距离 → softmax 信号分布
   const scored = ARCHETYPE_ORDER.map((key) => {
     const [pi, pr] = archetypes[key].proto
     const dist = Math.hypot(invest - pi, recip - pr)
-    return { key, dist, w: Math.exp(-dist / 24) }
+    const strength = counts[key] / Math.max(1, STATE_OPTION_COUNTS[key])
+    return { key, name: archetypes[key].name, count: counts[key], strength, dist }
   })
-  const wsum = scored.reduce((s, x) => s + x.w, 0) || 1
-  const distribution = scored
-    .map((x) => ({ key: x.key, name: archetypes[x.key].name, pct: Math.round((x.w / wsum) * 100) }))
-    .sort((a, b) => b.pct - a.pct)
-
-  const domKey = scored.reduce((a, b) => (b.w > a.w ? b : a)).key
+  const ranked = [...scored].sort((a, b) => b.strength - a.strength || a.dist - b.dist)
+  const domKey = ranked[0].key
+  const clarity = (ranked[0].strength - ranked[1].strength) / Math.max(0.01, ranked[0].strength)
+  const signal = Math.round(50 + clarity * 50)
+  const strengthTotal = scored.reduce((sum, row) => sum + row.strength, 0)
+  const distribution = toPercentDistribution(
+    scored.map((row) => ({ ...row, count: row.strength })),
+    strengthTotal,
+  )
+    .sort((a, b) => b.pct - a.pct || a.dist - b.dist)
+    .map(({ dist, count, strength, ...row }) => row)
   const idx = ARCHETYPE_ORDER.indexOf(domKey)
   const blip = { angle: -90 + idx * 60, radius: Math.max(22, signal) }
+  const evidence = answers
+    .filter((answer) => inferLegacyState(answer) === domKey)
+    .map((answer) => answer.evidence || answer.read)
+    .filter(Boolean)
+    .slice(0, 3)
+  const archetype = {
+    ...archetypes[domKey],
+    deep: { ...archetypes[domKey].deep, evidence },
+  }
 
-  return { invest, recip, signal, key: domKey, archetype: archetypes[domKey], distribution, blip }
+  return { invest, recip, signal, key: domKey, archetype, distribution, blip, evidence }
 }

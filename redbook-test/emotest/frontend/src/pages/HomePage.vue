@@ -10,7 +10,7 @@
     </header>
     <div class="hp-ticker rise" style="animation-delay: 80ms" aria-hidden="true">
       <div class="hp-ticker-row">
-        <span v-for="n in 2" :key="n" class="mono">脑内后台任务管理器 · 反复咀嚼 / 自我责备 / 预演焦虑 / 情绪压抑 · 内耗指数 0–100 · 主结果免费 · </span>
+        <span v-for="n in 2" :key="n" class="mono">脑内后台任务管理器 · 反复咀嚼 / 自我责备 / 提前预演 / 情绪压住 · 20 项采样 · 主结果免费 · </span>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
     <main class="hp-hero">
       <span class="hp-badge rise" style="animation-delay: 320ms">脑内后台任务管理器</span>
       <h1>
-        <span class="rise" style="animation-delay: 380ms">情绪内耗</span>
+        <span class="rise" style="animation-delay: 380ms">情绪后台</span>
         <em class="rise" style="animation-delay: 460ms">谁在后台偷偷耗电</em>
       </h1>
       <p class="rise" style="animation-delay: 560ms">
@@ -41,7 +41,7 @@
 
     <div class="hp-specs">
       <div class="hp-spec rise" style="animation-delay: 620ms"><Icon icon="mdi:memory" /><em>采样</em><b>五类进程</b></div>
-      <div class="hp-spec rise" style="animation-delay: 680ms"><Icon icon="mdi:chart-timeline-variant" /><em>输出</em><b>内耗指数</b></div>
+      <div class="hp-spec rise" style="animation-delay: 680ms"><Icon icon="mdi:chart-timeline-variant" /><em>输出</em><b>后台占用</b></div>
       <div class="hp-spec rise" style="animation-delay: 740ms"><Icon icon="mdi:database-outline" /><em>报告</em><b>降载策略</b></div>
     </div>
 
@@ -50,7 +50,7 @@
       <span class="hp-cta-label">扫描后台</span>
       <span class="hp-cta-ic"><Icon icon="mdi:arrow-right-thin" /></span>
     </button>
-    <p class="hp-proof mono rise" style="animation-delay: 860ms">已扫描 <b>176,903</b> 组后台任务</p>
+    <p class="hp-proof mono rise" style="animation-delay: 860ms"><b>20 题主结果免费</b> · 万能卡解锁答案证据与恢复策略</p>
     <p class="hp-note rise" style="animation-delay: 900ms">本测试仅供娱乐和轻量自我观察，不构成专业心理咨询、医学建议或现实关系判断。</p>
   </div>
 </template>

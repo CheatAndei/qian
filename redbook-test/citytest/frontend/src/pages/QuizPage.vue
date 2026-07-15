@@ -25,7 +25,7 @@
           <div class="opts">
             <button
               v-for="(opt, i) in currentQ.options"
-              :key="i"
+              :key="opt.id"
               class="opt"
               :class="{ 'is-pick': selected === i }"
               @click="selectOption(i)"
@@ -58,8 +58,8 @@
       </div>
       <div class="mb-info">
         <div class="mb-top">
-          <span class="mono mb-label"><span class="mb-dot"></span>路径权重 · 偏好采集中</span>
-          <span class="mono mb-sig">匹配 {{ dispSig }}%</span>
+          <span class="mono mb-label"><span class="mb-dot"></span>城市偏好 · 已采集 {{ answered }}/{{ total }}</span>
+          <span class="mono mb-sig">进度 {{ dispSig }}%</span>
         </div>
         <div class="mb-bar">
           <div class="mb-fill" :style="{ width: dispSig + '%' }"></div>
@@ -81,7 +81,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import gsap from 'gsap'
-import { questions } from '../data/quiz.js'
+import { questions, encodeAnswers } from '../data/quiz.js'
 import RadarScope from '../components/RadarScope.vue'
 
 const router = useRouter()
@@ -92,7 +92,7 @@ const selected = ref(null)
 const slideDir = ref('slide-left')
 const finished = ref(false)
 const readoutText = ref('')
-const dispSig = ref(0) // 显示用信号强度（GSAP 驱动，答题时跳动）
+const dispSig = ref(0) // 显示用完成进度（GSAP 驱动，答题时短暂跳动）
 const flash = ref(false)
 let sigTween = null
 let lock = false
@@ -118,24 +118,18 @@ const currentQ = computed(() => {
   return { ...q, options: getShuffled(q) }
 })
 const currentNo = computed(() => currentIdx.value + 1)
-const progressPct = computed(() => (currentIdx.value / total) * 100)
-
 const answered = computed(() => Object.keys(answersMap.value).length)
-const signalPct = computed(() => {
-  const vals = Object.values(answersMap.value)
-  if (!vals.length) return 0
-  const sum = vals.reduce((s, a) => s + (a.invest || 0), 0)
-  return Math.round((sum / (vals.length * 3)) * 100)
-})
+const progressPct = computed(() => Math.round((answered.value / total) * 100))
+const signalPct = progressPct
 
-// 答题反应：jolt=true 时信号强度先猛地过冲一下，再回落到累计真值
-function reactSig(optInvest, jolt) {
+// 答题反应：短暂过冲后回落到真实完成进度，不再把节奏偏好伪装成匹配度。
+function reactSig(jolt) {
   if (sigTween) sigTween.kill()
   const tgt = signalPct.value
   if (jolt) {
     flash.value = true
     setTimeout(() => (flash.value = false), 620)
-    const spike = Math.min(100, tgt + ((optInvest || 0) / 3) * 38 + 12)
+    const spike = Math.min(100, tgt + 16)
     const o = { v: dispSig.value }
     sigTween = gsap
       .timeline()
@@ -153,13 +147,13 @@ function pad(n) {
 function restoreSelected() {
   const prev = answersMap.value[currentQ.value.id]
   if (prev) {
-    selected.value = currentQ.value.options.findIndex((o) => o.text === prev.text)
-    readoutText.value = prev.read || ''
+    selected.value = currentQ.value.options.findIndex((o) => o.id === prev)
+    readoutText.value = currentQ.value.options[selected.value]?.read || ''
   } else {
     selected.value = null
     readoutText.value = ''
   }
-  reactSig(0, false)
+  reactSig(false)
 }
 restoreSelected()
 
@@ -169,13 +163,8 @@ function selectOption(i) {
   selected.value = i
   const opt = currentQ.value.options[i]
   readoutText.value = opt.read || ''
-  answersMap.value[currentQ.value.id] = {
-    invest: opt.invest,
-    recip: opt.recip,
-    text: opt.text,
-    read: opt.read,
-  }
-  reactSig(opt.invest, true)
+  answersMap.value[currentQ.value.id] = opt.id
+  reactSig(true)
   setTimeout(() => goNext(), 520)
 }
 
@@ -211,10 +200,12 @@ function handleExit() {
 }
 
 function submit() {
-  const answerList = questions.map((q) => answersMap.value[q.id]).filter(Boolean)
+  const answerList = questions.map((q) => answersMap.value[q.id])
+  const encoded = encodeAnswers(answerList)
+  if (!encoded) return
   finished.value = true
   setTimeout(() => {
-    router.push({ path: '/result', query: { a: JSON.stringify(answerList) } })
+    router.push({ path: '/result', query: { a: encoded } })
   }, 1100)
 }
 </script>
@@ -572,5 +563,3 @@ function submit() {
   color: var(--ink-2);
 }
 </style>
-
-

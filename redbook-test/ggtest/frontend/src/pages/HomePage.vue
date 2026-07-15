@@ -11,7 +11,7 @@
     <section class="monitor" v-motion="{ initial: { opacity: 0, y: 18 }, enter: { opacity: 1, y: 0, transition: { delay: 140, type: 'spring', stiffness: 180, damping: 22 } } }">
       <div class="monitor-top">
         <span class="mono ch">CH-A 珊瑚 · CH-B 紫</span>
-        <span class="mono read"><b>{{ Math.round(syncPct) }}%</b><i>同步率</i></span>
+        <span class="mono read"><b>{{ Math.round(syncPct) }}%</b><i>适配度</i></span>
       </div>
       <TwinWave :sync="sync" :amplitude="0.6" :height="124" :speed="5" />
       <div class="monitor-bottom">
@@ -23,12 +23,12 @@
 
     <!-- 标题 -->
     <div class="hero">
-      <span class="badge" v-motion="{ initial: { opacity: 0, y: 12 }, enter: { opacity: 1, y: 0, transition: { delay: 260 } } }">双频共振 · 闺蜜同频</span>
+      <span class="badge" v-motion="{ initial: { opacity: 0, y: 12 }, enter: { opacity: 1, y: 0, transition: { delay: 260 } } }">双频共振 · 友情同频</span>
       <h1 v-motion="{ initial: { opacity: 0, y: 18 }, enter: { opacity: 1, y: 0, transition: { delay: 340, type: 'spring', stiffness: 200 } } }">
-        闺蜜<br /><em>同频检测</em>
+        友情<br /><em>同频检测</em>
       </h1>
       <p v-motion="{ initial: { opacity: 0 }, enter: { opacity: 1, transition: { delay: 460 } } }">
-        你和她，是不是一个脑子？<br />20 题测出你们的默契频率，看你俩同频到第几档。
+        20 个真实友情场景，看看你们如何尊重差异、适配节奏、守住秘密并修复错拍。
       </p>
     </div>
 
@@ -56,9 +56,9 @@
     >
       <span class="cta-ring"></span>
       <Icon icon="mdi:power" />
-      <span>开始同步</span>
+      <span>开始检测</span>
     </button>
-    <p class="proof mono">已完成 <b>312,860</b> 次同频检测</p>
+    <p class="proof mono"><b>20 题主结果免费</b> · 万能卡解锁主次维度与答案证据</p>
 
     <p class="note">本测试由 AI 生成，仅供娱乐参考，不构成专业心理或关系判断。</p>
   </div>
@@ -86,7 +86,7 @@ function tickClock() {
     .join(':')
 }
 
-const lockLabel = () => (sync.value >= 0.66 ? '锁相中' : sync.value >= 0.33 ? '逼近锁相' : '搜索频率')
+const lockLabel = () => (sync.value >= 0.66 ? '多维合拍' : sync.value >= 0.33 ? '正在校频' : '读取场景')
 const phaseLabel = () => (sync.value >= 0.95 ? '0°' : `${Math.round((1 - sync.value) * 180)}°`)
 
 onMounted(() => {

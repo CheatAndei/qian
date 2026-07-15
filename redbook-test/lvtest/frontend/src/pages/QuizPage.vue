@@ -71,8 +71,8 @@
       <div class="finish-ring">
         <Icon icon="mdi:heart-multiple-outline" />
       </div>
-      <h2>测级完成</h2>
-      <p class="mono">正在生成你们的等级卡...</p>
+      <h2>采集完成</h2>
+      <p class="mono">正在生成亲密深度与关系状态...</p>
     </div>
   </div>
 </template>
@@ -172,6 +172,8 @@ function selectOption(i) {
   answersMap.value[currentQ.value.id] = {
     invest: opt.invest,
     recip: opt.recip,
+    state: opt.state,
+    dims: opt.dims || {},
     text: opt.text,
     read: opt.read,
   }
@@ -572,5 +574,3 @@ function submit() {
   color: var(--ink-2);
 }
 </style>
-
-

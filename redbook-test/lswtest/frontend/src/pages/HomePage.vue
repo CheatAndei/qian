@@ -12,7 +12,7 @@
     </header>
     <div class="hp-ticker rise" style="animation-delay: 80ms" aria-hidden="true">
       <div class="hp-ticker-row">
-        <span v-for="n in 2" :key="n" class="mono">关系气象站 · 四类依恋天气 · 晴稳 / 雷达 / 离岸 / 多云 · 20 项观测 · 主结果免费 · </span>
+        <span v-for="n in 2" :key="n" class="mono">关系气象站 · 四种靠近方式 · 稳定 / 敏感 / 空间 / 切换 · 20 项观测 · 主结果免费 · </span>
       </div>
     </div>
 
@@ -36,7 +36,7 @@
     <main class="hp-hero">
       <span class="hp-badge rise" style="animation-delay: 320ms">关系气象站</span>
       <h1>
-        <span class="rise" style="animation-delay: 380ms">依恋类型</span>
+        <span class="rise" style="animation-delay: 380ms">关系靠近方式</span>
         <em class="rise" style="animation-delay: 460ms">你的关系默认天气</em>
       </h1>
       <p class="rise" style="animation-delay: 560ms">
@@ -46,7 +46,7 @@
 
     <!-- 规格 -->
     <div class="hp-specs">
-      <div class="hp-spec rise" style="animation-delay: 620ms"><Icon icon="mdi:compass-outline" /><em>模型</em><b>四类依恋</b></div>
+      <div class="hp-spec rise" style="animation-delay: 620ms"><Icon icon="mdi:compass-outline" /><em>模型</em><b>四种倾向</b></div>
       <div class="hp-spec rise" style="animation-delay: 680ms"><Icon icon="mdi:gauge" /><em>输出</em><b>天气 + 气压</b></div>
       <div class="hp-spec rise" style="animation-delay: 740ms"><Icon icon="mdi:weather-pouring" /><em>报告</em><b>深度天气报</b></div>
     </div>
@@ -57,7 +57,7 @@
       <span class="hp-cta-label">开始观测</span>
       <span class="hp-cta-ic"><Icon icon="mdi:arrow-right-thin" /></span>
     </button>
-    <p class="hp-proof mono rise" style="animation-delay: 860ms">已生成 <b>128,406</b> 份关系天气报</p>
+    <p class="hp-proof mono rise" style="animation-delay: 860ms">20 个场景免费生成主结果 · 万能卡解锁答案证据</p>
     <p class="hp-note rise" style="animation-delay: 900ms">本测试仅供娱乐和轻量自我观察，不构成专业心理咨询、医学建议或现实关系判断。</p>
   </div>
 </template>

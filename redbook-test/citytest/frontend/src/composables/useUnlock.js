@@ -1,7 +1,7 @@
 ﻿// 读取解锁状态（MVP 门禁，与 cptest 一致：localStorage + 共享 cookie）
 import { ref } from 'vue'
 
-const ALL_PRODUCTS = ['bftest', 'gftest', 'cptest', 'mstest', 'lovetest', 'shiptest', 'ggtest', 'lswtest', 'emotest', 'eletest', 'citytest', 'lvtest']
+const ALL_PRODUCTS = ['bftest', 'gftest', 'cptest', 'mstest', 'lovetest', 'shiptest', 'ggtest', 'lswtest', 'emotest', 'eletest', 'citytest', 'lvtest', 'trusttest', 'last8test', 'restarttest']
 
 export function isUnlocked(product) {
   try {

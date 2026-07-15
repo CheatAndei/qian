@@ -6,8 +6,8 @@
     <!-- 刊头 -->
     <div class="pc-masthead">
       <span class="pc-issue mono">ISSUE · 2026</span>
-      <h2 class="pc-name">LOVE<br /><em>PERSONA</em></h2>
-      <span class="pc-tagline mono">恋爱人格 · 本期特辑</span>
+      <h2 class="pc-name">LOVE<br /><em>STYLE</em></h2>
+      <span class="pc-tagline mono">恋爱风格 · 本期特辑</span>
     </div>
 
     <!-- 拍立得封面人物 -->
@@ -19,7 +19,7 @@
       <span class="pc-caption mono">COVER · 你是谁</span>
     </div>
 
-    <!-- 漂浮人格贴纸 -->
+    <!-- 漂浮风格贴纸 -->
     <span
       v-for="(s, i) in stickers"
       :key="i"
@@ -36,8 +36,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 const root = ref(null)
 const developed = ref(true)
 
-// 人格贴纸（人设名，作为杂志贴纸；非装饰 emoji）
-const stickers = ['女王范', '温柔', '猫系', '撩人精', '事业型', '粘人精', '小恶魔', '戏精']
+// 风格贴纸（结果名，作为杂志贴纸；非装饰 emoji）
+const stickers = ['稳定', '温柔', '慢热', '表达', '独立', '陪伴', '氛围', '直觉']
 
 const positions = [
   { top: 8, left: 6, rot: -8 },

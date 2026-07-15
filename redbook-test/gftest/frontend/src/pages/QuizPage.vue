@@ -15,7 +15,7 @@
               <span class="zine-q mono">本期第 {{ currentIdx + 1 }} 问</span>
               <span class="zine-tape"></span>
             </div>
-            <h2 class="zine-question">{{ currentQ.question }}</h2>
+            <h2 class="zine-question">{{ neutralizeText(currentQ.question) }}</h2>
 
             <div class="picks">
               <button
@@ -26,7 +26,7 @@
                 @click="selectOption(i)"
               >
                 <span class="pick-key mono">{{ ['A', 'B', 'C', 'D'][i] }}</span>
-                <span class="pick-text">{{ opt.text }}</span>
+                <span class="pick-text">{{ neutralizeText(opt.text) }}</span>
                 <Icon v-if="selected === i" class="pick-on" icon="mdi:check-circle" />
               </button>
             </div>
@@ -53,7 +53,7 @@
             <input type="range" min="0" max="10" v-model.number="bonusScore" class="bonus-range" />
             <div class="bonus-scale mono"><span>0</span><span>5</span><span>10</span></div>
 
-            <button class="bonus-cta" @click="submitBonus"><Icon icon="mdi:camera-iris" /> 冲洗我的人格刊</button>
+            <button class="bonus-cta" @click="submitBonus"><Icon icon="mdi:camera-iris" /> 冲洗我的风格刊</button>
             <button class="bonus-back" @click="goPrev">再斟酌一下</button>
           </template>
         </div>
@@ -70,7 +70,7 @@
             :class="['m-' + item.cls, { 'is-new': idx === roastHistory.length - 1 }]"
           >
             <Icon class="note-ic" :icon="item.icon" />
-            <span class="note-text">{{ item.text }}</span>
+            <span class="note-text">{{ neutralizeText(item.text) }}</span>
           </div>
         </TransitionGroup>
       </div>
@@ -79,7 +79,7 @@
     <div class="finish" v-else>
       <div class="finish-ring"><Icon icon="mdi:camera-iris" /></div>
       <h2>拍立得冲洗中</h2>
-      <p class="mono">正在为你排版本期人格刊…</p>
+      <p class="mono">正在为你排版本期风格刊…</p>
     </div>
   </div>
 </template>
@@ -89,7 +89,7 @@ import { ref, computed, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import Icon from '../components/Icon.vue'
-import { questions, bonusQuestion } from '../data/questions.js'
+import { questions, bonusQuestion, neutralizeText } from '../data/questions.js'
 
 const router = useRouter()
 

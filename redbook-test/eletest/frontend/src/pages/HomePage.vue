@@ -10,7 +10,7 @@
     </header>
     <div class="hp-ticker rise" style="animation-delay: 80ms" aria-hidden="true">
       <div class="hp-ticker-row">
-        <span v-for="n in 2" :key="n" class="mono">社交电池地图 · 外放 / 巡航 / 选择性 / 省电 · 测续航与回血方式 · 20 项检测 · 主结果免费 · </span>
+        <span v-for="n in 2" :key="n" class="mono">社交电池地图 · 陌生局 / 熟人局 / 线上局 / 独处回血 · 测耗电源与恢复方式 · 20 项检测 · 主结果免费 · </span>
       </div>
     </div>
 
@@ -35,12 +35,12 @@
         <em class="rise" style="animation-delay: 460ms">你是哪种续航</em>
       </h1>
       <p class="rise" style="animation-delay: 560ms">
-        20 个社交场景，测出你的续航、耗电点和回血方式。不是冷漠，只是每个人的电量管理方式不一样。
+        20 个社交场景，测出你在哪种连接里有电、什么最耗电、怎样恢复。没有高低，只是供电方式不同。
       </p>
     </main>
 
     <div class="hp-specs">
-      <div class="hp-spec rise" style="animation-delay: 620ms"><Icon icon="mdi:battery-high" /><em>类型</em><b>五种电池</b></div>
+      <div class="hp-spec rise" style="animation-delay: 620ms"><Icon icon="mdi:battery-high" /><em>类型</em><b>四种电池</b></div>
       <div class="hp-spec rise" style="animation-delay: 680ms"><Icon icon="mdi:lightning-bolt" /><em>输出</em><b>电量 + 路线</b></div>
       <div class="hp-spec rise" style="animation-delay: 740ms"><Icon icon="mdi:map-marker-distance" /><em>报告</em><b>回血方式</b></div>
     </div>
@@ -50,7 +50,7 @@
       <span class="hp-cta-label">检测电量</span>
       <span class="hp-cta-ic"><Icon icon="mdi:arrow-right-thin" /></span>
     </button>
-    <p class="hp-proof mono rise" style="animation-delay: 860ms">已绘制 <b>151,772</b> 张社交电池图</p>
+    <p class="hp-proof mono rise" style="animation-delay: 860ms">20 个场景免费生成主结果 · 万能卡解锁深报</p>
     <p class="hp-note rise" style="animation-delay: 900ms">本测试仅供娱乐和轻量自我观察，不构成专业心理咨询、医学建议或现实关系判断。</p>
   </div>
 </template>
@@ -62,7 +62,7 @@ import gsap from 'gsap'
 import BatteryField from '../components/BatteryField.vue'
 
 const router = useRouter()
-const statA = ref(5)
+const statA = ref(4)
 const statB = ref(20)
 
 const reduced =
@@ -74,7 +74,7 @@ onMounted(() => {
   const s = { a: 0, b: 0 }
   statA.value = 0
   statB.value = 0
-  gsap.to(s, { a: 5, b: 20, duration: 1.1, ease: 'power2.out', delay: 0.4,
+  gsap.to(s, { a: 4, b: 20, duration: 1.1, ease: 'power2.out', delay: 0.4,
     onUpdate: () => { statA.value = Math.round(s.a); statB.value = Math.round(s.b) } })
 })
 

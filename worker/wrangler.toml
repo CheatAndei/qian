@@ -1,0 +1,10 @@
+name = "card-api"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+# Run `npx wrangler d1 create card_keys_db`, then replace the placeholder
+# database_id below with the value returned by Cloudflare.
+[[d1_databases]]
+binding = "DB"
+database_name = "card_keys_db"
+database_id = "e99821d7-c8bc-48fa-b6ca-631a1bf65c00"

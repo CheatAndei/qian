@@ -28,9 +28,14 @@ desktop.ini
 *.swo
 
 # 项目其他目录（不入库）
-panpan/
-worker/
+teach/
 agent-bridge/
 xpy-agent/
-classtest/
 .claude/
+z-rubbish/
+
+# Worker 源码需要版本化；仅忽略密钥、卡密种子和本地状态
+worker/seeds/
+worker/.wrangler/
+worker/.dev.vars
+worker/*.log

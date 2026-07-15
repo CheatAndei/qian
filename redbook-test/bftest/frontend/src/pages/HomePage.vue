@@ -5,12 +5,12 @@
     <!-- 考试抬头条 -->
     <header class="hp-bar rise" style="animation-delay: 40ms">
       <span class="hp-live"><i></i> 阅卷中</span>
-      <span class="hp-org mono">2026 全国男友资格统考</span>
+      <span class="hp-org mono">男友资格趣味考试 · 2026卷</span>
       <span class="hp-seal"><Icon icon="mdi:certificate-outline" /></span>
     </header>
     <div class="hp-ticker rise" style="animation-delay: 80ms" aria-hidden="true">
       <div class="hp-ticker-row">
-        <span v-for="n in 2" :key="n" class="mono">男友资格统一考试 · 客观 90 + 加分 10 · 满分 100 · 及格 60 · 当场出成绩单 · 主结果免费 · </span>
+        <span v-for="n in 2" :key="n" class="mono">男友资格趣味考试 · 客观 90 + 加分 10 · 满分 100 · 及格 60 · 当场出成绩单 · 主结果免费 · </span>
       </div>
     </div>
 
@@ -55,7 +55,7 @@
       <span class="hp-cta-label">开始批卷</span>
       <span class="hp-cta-ic"><Icon icon="mdi:pencil" /></span>
     </button>
-    <p class="hp-proof mono">已有不少姐妹替对象交了卷</p>
+    <p class="hp-proof mono">31 项场景 · 主结果免费 · 万能卡解锁深报</p>
     <p class="hp-note">* 娱乐测试，结果由 AI 生成，仅供参考，别太较真。</p>
   </div>
 </template>
